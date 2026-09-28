@@ -1,0 +1,25 @@
+# Step 5 — Create .gitignore
+cat > .gitignore << 'EOF'
+firebase-credentials.json
+*.json.key
+service-account*.json
+*credentials*.json
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+node_modules/
+dist/
+build/
+.pytest_cache/
+.coverage
+.idea/
+.vscode/
+*.zip
+*.tar.gz
+.DS_Store
+EOF
