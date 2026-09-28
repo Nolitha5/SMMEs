@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: price-agent-ai-v3
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --access-logfile - --error-logfile -
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /var/data/price_agent.db
+      - key: CHECK_INTERVAL_HOURS
+        value: "6"
+      - key: ENABLE_BACKGROUND_CHECKER
+        value: "true"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
+      - key: FIREBASE_CONFIG_JSON
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+    disk:
+      name: price-agent-data
+      mountPath: /var/data
+      sizeGB: 1
