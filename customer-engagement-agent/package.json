@@ -1,0 +1,23 @@
+{
+  "name": "customer-engagement-agent",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run build -w @cea/shared && concurrently -n web,api -c auto \"npm run dev -w @cea/web\" \"npm run dev -w @cea/api\"",
+    "build": "npm run build -w @cea/shared && npm run build -w @cea/web && npm run build -w @cea/api",
+    "test": "npm run test -w @cea/shared",
+    "typecheck": "npm run typecheck -w @cea/shared && npm run typecheck -w @cea/web && npm run typecheck -w @cea/api",
+    "quality": "npm run integration:check && npm run test && npm run typecheck && npm run build",
+    "integration:check": "node scripts/validate-integration.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

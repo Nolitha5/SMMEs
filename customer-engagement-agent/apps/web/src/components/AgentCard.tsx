@@ -1,0 +1,4 @@
+import { ArrowRight } from 'lucide-react';
+export function AgentCard({ id, name, role, reads, writes }: { id: string; name: string; role: string; reads: string; writes: string }) {
+  return <div className="card p-4"><div className="flex items-start justify-between gap-3"><div className="flex gap-3"><div className="grid size-10 shrink-0 place-items-center rounded-2xl bg-blue-600/15 text-xs font-bold text-blue-300">{id}</div><div><h3 className="text-sm font-semibold text-white">{name}</h3><p className="mt-1 text-xs leading-5 text-slate-500">{role}</p></div></div><ArrowRight className="mt-1 size-4 text-slate-600"/></div><div className="mt-4 grid gap-2 text-[11px]"><p className="rounded-xl bg-slate-950/70 px-3 py-2 text-slate-400"><span className="text-slate-600">Reads · </span>{reads}</p><p className="rounded-xl bg-slate-950/70 px-3 py-2 text-slate-400"><span className="text-slate-600">Writes · </span>{writes}</p></div></div>;
+}

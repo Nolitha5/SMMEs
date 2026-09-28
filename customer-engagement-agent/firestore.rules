@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function member(businessId) {
+      return signedIn() && exists(/databases/$(database)/documents/businesses/$(businessId)/members/$(request.auth.uid));
+    }
+    function role(businessId) {
+      return get(/databases/$(database)/documents/businesses/$(businessId)/members/$(request.auth.uid)).data.role;
+    }
+    function canWrite(businessId) {
+      return member(businessId) && role(businessId) in ['owner', 'manager', 'staff', 'agent'];
+    }
+    function isAdmin(businessId) {
+      return member(businessId) && role(businessId) in ['owner', 'manager'];
+    }
+
+    match /businesses/{businessId} {
+      allow read: if member(businessId);
+      allow create, update: if isAdmin(businessId);
+      allow delete: if false;
+
+      match /members/{uid} {
+        allow read: if member(businessId);
+        allow create, update, delete: if isAdmin(businessId);
+      }
+
+      match /{collection}/{docId} {
+        function sharedDataCollection() {
+          return collection in ['customers', 'transactions', 'products', 'feedback', 'insights', 'events', 'syncAudit'];
+        }
+        allow read: if sharedDataCollection() && member(businessId);
+        allow create, update: if sharedDataCollection()
+          && canWrite(businessId)
+          && request.resource.data.businessId == businessId;
+        allow delete: if sharedDataCollection() && isAdmin(businessId);
+      }
+    }
+  }
+}
