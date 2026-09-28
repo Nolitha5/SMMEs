@@ -1,0 +1,6 @@
+performance_id,supplier_id,period_end,orders,on_time_orders,on_time_rate
+SP001,SUP001,2026-08-31,18,17,0.94
+SP002,SUP002,2026-08-31,22,19,0.86
+SP003,SUP003,2026-08-31,20,19,0.92
+SP004,SUP004,2026-08-31,15,12,0.8
+SP005,SUP005,2026-08-31,16,14,0.88

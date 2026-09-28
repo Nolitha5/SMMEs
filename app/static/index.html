@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ═══════════════════════════════════════════ SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">📦</div>
+      <div>
+        <div class="logo-text">Inventory<br>Manager</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <button class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">📊</span> Dashboard
+      </button>
+
+      <div class="nav-section-label">Inventory</div>
+      <button class="nav-item" data-page="stock">
+        <span class="nav-icon">📦</span> Stock
+      </button>
+      <button class="nav-item" data-page="products">
+        <span class="nav-icon">📋</span> Products
+      </button>
+
+      <div class="nav-section-label">Management</div>
+      <button class="nav-item" data-page="reorders">
+        <span class="nav-icon">🔄</span> Reorders
+      </button>
+      <button class="nav-item" data-page="risks">
+        <span class="nav-icon">⚠️</span> Stock Risks
+      </button>
+      <button class="nav-item" data-page="exceptions">
+        <span class="nav-icon">🚨</span> Exceptions
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      Inventory Management Agent<br>
+      I1 · I2 · I3 · I4 · I5
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════ MAIN -->
+  <div class="main-content">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="status-dot"></div>
+        <span class="status-label">Live data</span>
+        <a href="/docs" target="_blank" style="font-size:12px;color:var(--color-text-muted);text-decoration:none;padding:6px 10px;border:1px solid var(--color-border);border-radius:6px;">
+          API Docs ↗
+        </a>
+      </div>
+    </header>
+
+    <!-- ── DASHBOARD PAGE ── -->
+    <section class="page-area active" id="page-dashboard">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p class="page-subtitle">Real-time overview of your inventory health</p>
+      </div>
+
+      <div class="kpi-grid" id="dash-kpis">
+        <!-- populated by JS -->
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">🔔 Attention Required</div>
+        </div>
+        <div class="section-card-body">
+          <div id="dash-attention">
+            <div class="loading-state"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STOCK PAGE ── -->
+    <section class="page-area" id="page-stock">
+      <div class="page-header">
+        <h1>Stock Inventory</h1>
+        <p class="page-subtitle">Current stock levels across all products · Click a row to view full product details</p>
+      </div>
+
+      <div class="section-card">
+        <div class="table-toolbar">
+          <input class="toolbar-input" id="stock-search" type="text" placeholder="🔍  Search product…" />
+          <select class="toolbar-select" id="stock-status-filter">
+            <option value="">All Statuses</option>
+            <option value="OK">Healthy</option>
+            <option value="LOW">Low Stock</option>
+            <option value="CRITICAL">Critical</option>
+            <option value="OUT_OF_STOCK">Out of Stock</option>
+          </select>
+          <select class="toolbar-select" id="stock-cat-filter">
+            <option value="">All Categories</option>
+          </select>
+          <span class="toolbar-count" id="stock-count"></span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead id="stock-thead">
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th data-sort="stock_on_hand">Stock On Hand ↕</th>
+                <th data-sort="available_stock">Available ↕</th>
+                <th>In Transit</th>
+                <th>Status</th>
+                <th data-sort="days_of_cover">Days of Cover ↕</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="stock-table-body">
+              <tr><td colspan="8" class="loading-state"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── REORDERS PAGE ── -->
+    <section class="page-area" id="page-reorders">
+      <div class="page-header">
+        <h1>Reorder Management</h1>
+        <p class="page-subtitle">Products requiring a reorder are shown first · Informational only — no purchases are placed</p>
+      </div>
+
+      <div class="kpi-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-bottom:20px">
+        <div class="kpi-card kpi-danger">
+          <div class="kpi-icon">🔴</div>
+          <div class="kpi-value" id="reorder-urgent-count">—</div>
+          <div class="kpi-label">Reorder Required</div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">🔄 Reorder Decisions (I2)</div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Available Stock</th>
+                <th>Inventory Position</th>
+                <th>Reorder Point</th>
+                <th>Suggested Qty</th>
+                <th>Lead Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="reorder-table-body">
+              <tr><td colspan="7" class="loading-state"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STOCK RISKS PAGE ── -->
+    <section class="page-area" id="page-risks">
+      <div class="page-header">
+        <h1>Stock Risks</h1>
+        <p class="page-subtitle">Expiry risks, slow stock, dead stock and excess stock (I4) · Sorted by severity</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">⚠️ Active Risk Alerts</div>
+          <span class="text-muted" id="risk-count" style="font-size:13px"></span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Risk Type</th>
+                <th>Severity</th>
+                <th>Available Stock</th>
+                <th>Sales Velocity</th>
+                <th>Days of Cover</th>
+                <th>Days to Expiry</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody id="risk-table-body">
+              <tr><td colspan="8" class="loading-state"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EXCEPTIONS PAGE ── -->
+    <section class="page-area" id="page-exceptions">
+      <div class="page-header">
+        <h1>Inventory Exceptions</h1>
+        <p class="page-subtitle">Detected by the I5 Inventory Exception Agent · Sorted by severity</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">🚨 Active Exceptions</div>
+          <span class="text-muted" id="exc-count" style="font-size:13px"></span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Exception Type</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Detail</th>
+                <th>Date Detected</th>
+              </tr>
+            </thead>
+            <tbody id="exc-table-body">
+              <tr><td colspan="6" class="loading-state"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRODUCTS PAGE ── -->
+    <section class="page-area" id="page-products">
+      <div class="page-header">
+        <h1>Products</h1>
+        <p class="page-subtitle">Full product catalogue · Click any product to view detailed information</p>
+      </div>
+
+      <div class="section-card">
+        <div class="table-toolbar">
+          <input class="toolbar-input" id="products-search" type="text" placeholder="🔍  Search by name, ID or category…" />
+          <span class="toolbar-count" id="products-count"></span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Supplier</th>
+                <th>Shelf Life</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body">
+              <tr><td colspan="6" class="loading-state"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<!-- ═══════════════════════════════════════════ PRODUCT MODAL -->
+<div class="modal-overlay" id="product-modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-product-title">Product Details</h2>
+      <button class="modal-close" id="modal-close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-product-body">
+      <!-- populated dynamically -->
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>

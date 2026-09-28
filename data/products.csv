@@ -1,0 +1,21 @@
+product_id,sku,name,category,unit_cost,sell_price,margin_floor,shelf_life_days,active
+P001,SKU-001,White Bread 700g,Bakery,14.5,22.99,2,3,True
+P002,SKU-002,Milk 2L,Dairy,22.0,31.99,2,7,True
+P003,SKU-003,Eggs 18 Pack,Dairy,38.0,54.99,5,21,True
+P004,SKU-004,Maize Meal 5kg,Staples,48.0,69.99,10,365,True
+P005,SKU-005,Rice 2kg,Staples,28.0,42.99,8,365,True
+P006,SKU-006,Cooking Oil 2L,Staples,42.0,62.99,8,365,True
+P007,SKU-007,Baked Beans 410g,Canned Goods,9.5,15.99,3,730,True
+P008,SKU-008,Tomato Sauce 750ml,Condiments,18.0,27.99,4,365,True
+P009,SKU-009,Potato Chips 120g,Snacks,8.0,14.99,5,180,True
+P010,SKU-010,Soft Drink 2L,Beverages,11.0,19.99,6,180,True
+P011,SKU-011,Instant Coffee 200g,Beverages,45.0,69.99,6,365,True
+P012,SKU-012,Laundry Detergent 2kg,Household,52.0,79.99,10,730,True
+P013,SKU-013,Toilet Paper 18 Pack,Household,58.0,89.99,10,730,True
+P014,SKU-014,Chicken Portions 2kg,Frozen,65.0,94.99,15,90,True
+P015,SKU-015,Frozen Mixed Vegetables 1kg,Frozen,30.0,44.99,8,180,True
+P016,SKU-016,Yoghurt 6 Pack,Dairy,24.0,36.99,4,30,True
+P017,SKU-017,Peanut Butter 400g,Spreads,25.0,39.99,6,365,True
+P018,SKU-018,Cereal 750g,Breakfast,31.0,49.99,7,365,True
+P019,SKU-019,Chocolate Bar 80g,Confectionery,7.0,12.99,3,180,True
+P020,SKU-020,Bottled Water 1.5L,Beverages,5.0,9.99,4,365,True

@@ -1,0 +1,5 @@
+promotion_id,product_id,start_date,end_date,description,discount_rate
+PROMO001,P009,2026-08-22,2026-08-24,Weekend Snack Special,0.15
+PROMO002,P010,2026-08-29,2026-08-31,Weekend Drinks Special,0.1
+PROMO003,P014,2026-09-01,2026-09-07,Chicken Family Week,0.12
+PROMO004,P016,2026-09-02,2026-09-05,Yoghurt Multi-Buy,0.1

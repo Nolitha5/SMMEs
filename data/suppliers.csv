@@ -1,0 +1,6 @@
+supplier_id,name,category,lead_time_days,reliability_score
+SUP001,FreshFoods Distributors,Bakery/Dairy,2,0.93
+SUP002,Mzanzi Wholesale,Staples/Canned,4,0.89
+SUP003,QuickStock Suppliers,Beverages/Snacks,3,0.91
+SUP004,HomeCare Wholesale,Household,5,0.86
+SUP005,FrozenGoods SA,Frozen,4,0.88

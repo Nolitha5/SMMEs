@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "Inventory Management Agent",
+    "version": "1.1.0",
+    "description": "I1 Stock Monitor — shared mock retail dataset edition"
+  },
+  "data": {
+    "products_file": "data/products.csv",
+    "inventory_snapshots_file": "data/inventory_snapshots.csv",
+    "inventory_movements_file": "data/inventory_movements.csv",
+    "transactions_file": "data/transactions.csv",
+    "demand_forecasts_file": "data/demand_forecasts.json",
+    "suppliers_file": "data/suppliers.csv",
+    "supplier_performance_file": "data/supplier_performance.csv"
+  },
+  "thresholds": {
+    "critical_days": 2.0,
+    "low_days": 7.0,
+    "no_forecast_critical_units": 5.0,
+    "no_forecast_low_units": 15.0
+  },
+  "notes": {
+    "available_stock_formula": "stock_on_hand - reserved - damaged",
+    "days_of_supply_formula": "available_stock / (expected_qty / horizon)",
+    "demand_source": "demand_forecasts.json (mock — will be replaced by Member 1 output)"
+  }
+}

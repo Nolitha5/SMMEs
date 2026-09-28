@@ -1,0 +1,4 @@
+event_id,date,name,impact_level,store_id
+EVENT001,2026-08-15,Community Market,Medium,STORE-001
+EVENT002,2026-08-29,Month-End Pay Weekend,High,STORE-001
+EVENT003,2026-09-05,Local Sports Tournament,High,STORE-001
