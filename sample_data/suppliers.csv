@@ -1,0 +1,4 @@
+supplier_id,name,status,payment_terms_days,currency,contact_email
+SUP-001,Ubuntu Wholesale,ACTIVE,30,ZAR,orders@ubuntu.example
+SUP-002,Mzansi Distribution,ACTIVE,45,ZAR,sales@mzansi.example
+SUP-003,Metro Cash Supply,ACTIVE,14,ZAR,b2b@metro.example

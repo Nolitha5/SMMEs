@@ -1,0 +1,3 @@
+product_id,reorder_point,projected_position,reorder_needed,recommended_qty,generated_at,source_version
+SKU-100,180,95,true,260,2026-09-08T10:00:00Z,inventory-1.0
+SKU-200,75,110,false,0,2026-09-08T10:00:00Z,inventory-1.0

@@ -1,0 +1,3 @@
+po_id,recommendation_id,supplier_id,product_id,qty,unit_cost,currency,ordered_at,promised_date,status,created_by
+PO-DEMO-001,REC-DEMO-001,SUP-002,SKU-100,260,18.90,ZAR,2026-09-01T09:00:00Z,2026-09-04,OPEN,demo:manager@example.com
+PO-DEMO-002,REC-DEMO-002,SUP-001,SKU-200,40,42.00,ZAR,2026-09-01T09:00:00Z,2026-09-06,OPEN,demo:manager@example.com

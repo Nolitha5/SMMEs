@@ -1,0 +1,73 @@
+# --- Secrets and credentials -------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+serviceAccount*.json
+firebase-admin*.json
+credentials*.json
+*-private-key.json
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+coverage/
+htmlcov/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+
+# --- Node / frontend ---------------------------------------------------------
+node_modules/
+dist/
+build/
+.vite/
+npm-debug.log*
+yarn-error.log*
+
+# --- Firebase / emulator state ----------------------------------------------
+.firebase/
+firebase-debug.log
+firestore-debug.log
+database-debug.log
+pubsub-debug.log
+storage-debug.log
+ui-debug.log
+firebase-emulator-data/
+emulator-data/
+
+# --- Local tooling and scratch ----------------------------------------------
+tools/
+runtime/
+tmp/
+temp/
+*.log
+
+# --- Audit source material ---------------------------------------------------
+# Immutable reference documents used only for the compliance audit. The audit
+# *outputs* under docs/ are published; these inputs are not.
+docs/source/
+*.zip
+*.7z
+*.rar
+
+# --- IDE / editor ------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+
+# --- OS ----------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/

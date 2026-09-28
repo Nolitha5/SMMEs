@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function procurementRole() {
+      return signedIn() && request.auth.token.role in ['admin', 'owner_manager', 'procurement_manager'];
+    }
+
+    // Firestore ORs every matching rule block, so there is deliberately NO
+    // catch-all here: a broad `allow write` would silently override the
+    // `allow write: if false` on the protected collections below. Anything not
+    // listed is denied by default.
+
+    // -------------------------------------------------------------------
+    // Shared exchange layer + governance + evaluation.
+    // Written ONLY by the trusted backend (Admin SDK bypasses these rules).
+    // Clients may read with the procurement role; manager actions go through
+    // authenticated backend APIs, never direct writes.
+    // -------------------------------------------------------------------
+    match /agent_outputs/{doc}          { allow read: if procurementRole(); allow write: if false; }
+    match /agent_state/{doc}            { allow read: if procurementRole(); allow write: if false; }
+    match /agent_runs/{doc}             { allow read: if procurementRole(); allow write: if false; }
+    match /system_events/{doc}          { allow read: if procurementRole(); allow write: if false; }
+    match /approval_log/{doc}           { allow read: if procurementRole(); allow write: if false; }
+    match /outcomes/{doc}               { allow read: if procurementRole(); allow write: if false; }
+    match /agent_recommendations/{doc}  { allow read: if procurementRole(); allow write: if false; }
+
+    // -------------------------------------------------------------------
+    // Shared operational context owned by other domains. Read-only here.
+    // -------------------------------------------------------------------
+    match /products/{doc}               { allow read: if procurementRole(); allow write: if false; }
+    match /inventory_snapshots/{doc}    { allow read: if procurementRole(); allow write: if false; }
+    match /inventory_movements/{doc}    { allow read: if procurementRole(); allow write: if false; }
+
+    // -------------------------------------------------------------------
+    // Procurement operational source data. Procurement is the canonical
+    // writer; the procurement role may maintain these.
+    // -------------------------------------------------------------------
+    match /suppliers/{doc}              { allow read, write: if procurementRole(); }
+    match /supplier_quotes/{doc}        { allow read, write: if procurementRole(); }
+    match /supplier_performance/{doc}   { allow read, write: if procurementRole(); }
+    match /purchase_orders/{doc}        { allow read, write: if procurementRole(); }
+    match /goods_receipts/{doc}         { allow read, write: if procurementRole(); }
+    match /invoices/{doc}               { allow read, write: if procurementRole(); }
+  }
+}

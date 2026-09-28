@@ -1,0 +1,4 @@
+product_id,name,category,unit,active
+SKU-100,Maize Meal 10kg,Staples,each,true
+SKU-200,Sunflower Oil 2L,Cooking,each,true
+SKU-300,Long Grain Rice 5kg,Staples,each,true

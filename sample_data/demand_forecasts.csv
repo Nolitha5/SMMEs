@@ -1,0 +1,3 @@
+product_id,horizon_days,expected_qty,lower_bound,upper_bound,confidence,drivers,generated_at,source_version
+SKU-100,7,310,270,355,0.86,"weekend uplift|local event",2026-09-08T10:00:00Z,demand-1.0
+SKU-200,7,80,65,100,0.79,"stable baseline",2026-09-08T10:00:00Z,demand-1.0

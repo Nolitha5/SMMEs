@@ -1,0 +1,37 @@
+# Dependency trees — must never enter the build context.
+# frontend/Dockerfile does `COPY frontend/. .` after `npm ci`; without this
+# exclusion a host node_modules (Windows binaries) would overwrite the Linux
+# install and break the in-container Vite build.
+**/node_modules
+**/.venv
+venv/
+
+# Build output — images build their own.
+**/dist
+frontend/dist
+
+# Python bytecode and test caches
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+.coverage
+htmlcov/
+
+# Secrets — never copy real environment files into an image.
+.env
+.env.*
+!.env.example
+**/*.pem
+**/*.key
+**/*serviceAccount*.json
+
+# Local tooling / editor state
+.git
+.gitignore
+.firebase
+.idea
+.vscode
+*.log
+
+# Emulator scratch state (see firebase-emulator-data/)
+firebase-emulator-data/

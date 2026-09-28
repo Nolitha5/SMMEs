@@ -1,0 +1,3 @@
+product_id,on_hand,on_order,allocated,available,generated_at,source_version
+SKU-100,95,0,10,85,2026-09-08T10:00:00Z,inventory-1.0
+SKU-200,110,0,5,105,2026-09-08T10:00:00Z,inventory-1.0

@@ -1,0 +1,29 @@
+# Firebase emulator suite for LOCAL VALIDATION ONLY.
+#
+# Why this exists: on the Windows validation host the Firestore emulator JVM
+# cannot open a Netty selector ("Unable to establish loopback connection" from
+# sun.nio.ch.UnixDomainSockets). That is a host JVM/AF_UNIX restriction, not a
+# project defect. Running the suite on Linux avoids it.
+#
+# Java 21+ is required by firebase-tools 15.x, so this bases on Temurin 21
+# rather than Debian's default JRE (17).
+#
+# This image is never deployed. It holds no credentials and is only ever used
+# with a demo project id.
+FROM eclipse-temurin:21-jdk-noble
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g firebase-tools@15.29.0
+
+WORKDIR /project
+
+EXPOSE 4400 8080 9099 9199
+
+CMD ["firebase", "emulators:start", \
+     "--project", "demo-retail-procurement", \
+     "--only", "auth,firestore,storage"]
