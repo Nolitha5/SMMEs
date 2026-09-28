@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Price Agent AI — Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --border:    #2a2d3a;
+      --text:      #e8eaf0;
+      --muted:     #8b8fa8;
+      --accent:    #6c63ff;
+      --accent-h:  #5a52e0;
+      --google:    #ffffff;
+      --danger:    #ff4d6d;
+      --success:   #22c55e;
+      --input-bg:  #12141e;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* animated background blobs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      pointer-events: none;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    body::before {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #6c63ff, transparent);
+      top: -150px; left: -100px;
+    }
+    body::after {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #ff4d6d, transparent);
+      bottom: -120px; right: -80px;
+      animation-delay: -6s;
+    }
+    @keyframes float {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem 2.25rem;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.75rem;
+      justify-content: center;
+    }
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, #6c63ff, #ff4d6d);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .logo-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .logo-text span { color: var(--accent); }
+
+    .tabs {
+      display: flex;
+      background: var(--input-bg);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 1.75rem;
+    }
+    .tab {
+      flex: 1;
+      padding: 0.55rem;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .form-group { margin-bottom: 1.1rem; }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+    }
+    input::placeholder { color: var(--muted); opacity: 0.6; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.8rem;
+      background: linear-gradient(135deg, var(--accent), #8b83ff);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: opacity 0.2s, transform 0.1s;
+      letter-spacing: 0.2px;
+    }
+    .btn-primary:hover  { opacity: 0.9; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .divider {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin: 1.25rem 0;
+      color: var(--muted); font-size: 0.8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    .btn-google {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--google);
+      border: 1px solid #dadce0;
+      border-radius: 10px;
+      color: #3c4043;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 0.65rem;
+      transition: box-shadow 0.2s, transform 0.1s;
+    }
+    .btn-google:hover  { box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+    .btn-google:active { transform: scale(0.98); }
+    .btn-google svg    { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .error-msg {
+      background: rgba(255,77,109,0.12);
+      border: 1px solid rgba(255,77,109,0.3);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      font-size: 0.82rem;
+      color: #ff8099;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    .success-msg {
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      font-size: 0.82rem;
+      color: #4ade80;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .success-msg.show { display: block; }
+
+    .forgot {
+      text-align: right;
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
+    }
+    .forgot a {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .forgot a:hover { text-decoration: underline; }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1.5rem;
+    }
+    .footer-note a { color: var(--accent); text-decoration: none; }
+
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    @media (max-width: 480px) {
+      .card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div class="logo-text">Price Agent <span>AI</span></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('signin')">Sign In</button>
+    <button class="tab"       onclick="switchTab('signup')">Create Account</button>
+  </div>
+
+  <!-- Error / Success -->
+  <div class="error-msg"   id="errorMsg"></div>
+  <div class="success-msg" id="successMsg"></div>
+
+  <!-- ── Sign In Panel ─────────────────────────── -->
+  <div class="panel active" id="signinPanel">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="siEmail" placeholder="you@example.com" autocomplete="email"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="siPassword" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+    <div class="forgot"><a href="#" onclick="forgotPassword()">Forgot password?</a></div>
+    <button class="btn-primary" id="signinBtn" onclick="signIn()">Sign In</button>
+
+    <div class="divider">or continue with</div>
+    <button class="btn-google" onclick="signInGoogle()">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Sign in with Google
+    </button>
+  </div>
+
+  <!-- ── Sign Up Panel ─────────────────────────── -->
+  <div class="panel" id="signupPanel">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="suName" placeholder="Jane Smith" autocomplete="name"/>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="suEmail" placeholder="you@example.com" autocomplete="email"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="suPassword" placeholder="Min. 8 characters" autocomplete="new-password"/>
+    </div>
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" id="suConfirm" placeholder="Repeat password" autocomplete="new-password"/>
+    </div>
+    <button class="btn-primary" id="signupBtn" onclick="signUp()">Create Account</button>
+
+    <div class="divider">or continue with</div>
+    <button class="btn-google" onclick="signInGoogle()">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Sign up with Google
+    </button>
+  </div>
+
+  <p class="footer-note">
+    By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+  </p>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp }                               from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword,
+           createUserWithEmailAndPassword, updateProfile,
+           GoogleAuthProvider, signInWithPopup,
+           sendPasswordResetEmail, onAuthStateChanged }  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+  const firebaseConfig = {{ firebase_config|tojson }};
+  if (!firebaseConfig.apiKey) {
+    document.getElementById('errorMsg').textContent = 'Firebase is not configured. Add FIREBASE_CONFIG_JSON to your environment.';
+    document.getElementById('errorMsg').classList.add('show');
+  }}
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const auth        = getAuth(firebaseApp);
+  const googleProv  = new GoogleAuthProvider();
+
+  // ── If already signed in → go to dashboard ──────────────────
+  onAuthStateChanged(auth, user => {
+    if (user) window.location.href = '/';
+  });
+
+  // ── Helpers ─────────────────────────────────────────────────
+  function showError(msg)   { const el = document.getElementById('errorMsg');   el.textContent = msg; el.classList.add('show');    document.getElementById('successMsg').classList.remove('show'); }
+  function showSuccess(msg) { const el = document.getElementById('successMsg'); el.textContent = msg; el.classList.add('show');    document.getElementById('errorMsg').classList.remove('show');   }
+  function clearMessages()  { document.getElementById('errorMsg').classList.remove('show'); document.getElementById('successMsg').classList.remove('show'); }
+
+  function friendlyError(code) {
+    const map = {
+      'auth/user-not-found'       : 'No account found with this email.',
+      'auth/wrong-password'       : 'Incorrect password. Try again.',
+      'auth/email-already-in-use' : 'An account with this email already exists.',
+      'auth/weak-password'        : 'Password must be at least 8 characters.',
+      'auth/invalid-email'        : 'Please enter a valid email address.',
+      'auth/too-many-requests'    : 'Too many attempts. Please wait a moment.',
+      'auth/popup-closed-by-user' : 'Sign-in popup was closed. Try again.',
+      'auth/invalid-credential'   : 'Invalid email or password.',
+    };
+    return map[code] || 'Something went wrong. Please try again.';
+  }
+
+  async function afterAuth(user) {
+    const token = await user.getIdToken();
+    // Send token to Flask to start a server session
+    await fetch('/api/auth/session', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ idToken: token })
+    });
+    window.location.href = '/';
+  }
+
+  // ── Sign In ──────────────────────────────────────────────────
+  window.signIn = async function () {
+    clearMessages();
+    const email    = document.getElementById('siEmail').value.trim();
+    const password = document.getElementById('siPassword').value;
+    const btn      = document.getElementById('signinBtn');
+    if (!email || !password) { showError('Please fill in all fields.'); return; }
+    btn.disabled   = true;
+    btn.innerHTML  = '<span class="spinner"></span>Signing in…';
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      await afterAuth(cred.user);
+    } catch (e) {
+      showError(friendlyError(e.code));
+      btn.disabled  = false;
+      btn.innerHTML = 'Sign In';
+    }
+  };
+
+  // ── Sign Up ──────────────────────────────────────────────────
+  window.signUp = async function () {
+    clearMessages();
+    const name     = document.getElementById('suName').value.trim();
+    const email    = document.getElementById('suEmail').value.trim();
+    const password = document.getElementById('suPassword').value;
+    const confirm  = document.getElementById('suConfirm').value;
+    const btn      = document.getElementById('signupBtn');
+    if (!name || !email || !password || !confirm) { showError('Please fill in all fields.'); return; }
+    if (password !== confirm)                      { showError('Passwords do not match.');   return; }
+    if (password.length < 8)                       { showError('Password must be at least 8 characters.'); return; }
+    btn.disabled   = true;
+    btn.innerHTML  = '<span class="spinner"></span>Creating account…';
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(cred.user, { displayName: name });
+      await afterAuth(cred.user);
+    } catch (e) {
+      showError(friendlyError(e.code));
+      btn.disabled  = false;
+      btn.innerHTML = 'Create Account';
+    }
+  };
+
+  // ── Google ───────────────────────────────────────────────────
+  window.signInGoogle = async function () {
+    clearMessages();
+    try {
+      const cred = await signInWithPopup(auth, googleProv);
+      await afterAuth(cred.user);
+    } catch (e) {
+      showError(friendlyError(e.code));
+    }
+  };
+
+  // ── Forgot Password ──────────────────────────────────────────
+  window.forgotPassword = async function () {
+    const email = document.getElementById('siEmail').value.trim();
+    if (!email) { showError('Enter your email above first.'); return; }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showSuccess('Reset link sent! Check your inbox.');
+    } catch (e) {
+      showError(friendlyError(e.code));
+    }
+  };
+</script>
+
+<script>
+  // ── Tab switcher ─────────────────────────────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (tab === 'signin')));
+    document.getElementById('signinPanel').classList.toggle('active', tab === 'signin');
+    document.getElementById('signupPanel').classList.toggle('active', tab === 'signup');
+    document.getElementById('errorMsg').classList.remove('show');
+    document.getElementById('successMsg').classList.remove('show');
+  }
+
+  // ── Enter key support ────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const active = document.querySelector('.panel.active').id;
+    if (active === 'signinPanel') signIn();
+    else signUp();
+  });
+</script>
+
+</body>
+</html>

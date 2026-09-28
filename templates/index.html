@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Price Agent AI v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#20243a;--border:#2a2d3a;
+  --text:#e8eaf0;--muted:#8b8fa8;--accent:#6c63ff;--green:#22c55e;
+  --red:#ff4d6d;--orange:#f59e0b;--blue:#3b82f6;--yellow:#eab308;
+  --purple:#a855f7;
+}
+body{font-family:'Inter',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(108,99,255,.10),transparent 30%),radial-gradient(circle at 90% 10%,rgba(52,168,83,.07),transparent 25%),var(--bg);color:var(--text);min-height:100vh}
+button,input,select,textarea{transition:box-shadow .2s,border-color .2s,transform .12s}
+::selection{background:rgba(108,99,255,.35)}
+.product-card,.budget-card,.wishlist-card,.kpi{box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.product-card:hover,.budget-card:hover,.wishlist-card:hover{box-shadow:0 14px 38px rgba(0,0,0,.22)}
+.btn-accent{background:linear-gradient(135deg,#6c63ff,#8b83ff);box-shadow:0 6px 18px rgba(108,99,255,.22)}
+
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.5rem;
+    background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:1.05rem}
+.nav-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),#ff4d6d);
+    border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.nav-logo span{color:var(--accent)}
+.nav-center{display:flex;gap:.25rem}
+.nav-tab{padding:.45rem .9rem;border:none;background:none;color:var(--muted);
+    font-family:'Inter',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;
+    border-radius:8px;transition:all .2s}
+.nav-tab:hover{background:var(--border);color:var(--text)}
+.nav-tab.active{background:rgba(108,99,255,.2);color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:.65rem}
+.gemini-badge{background:linear-gradient(135deg,#1a73e8,#34a853);color:#fff;
+    font-size:.7rem;font-weight:600;padding:.2rem .55rem;border-radius:20px;display:none}
+.gemini-badge.on{display:block}
+.alert-bell{position:relative;cursor:pointer;background:none;border:none;
+    color:var(--muted);font-size:1.15rem;padding:.3rem}
+.alert-badge{position:absolute;top:-2px;right:-2px;background:var(--red);color:#fff;
+    font-size:.62rem;font-weight:700;width:15px;height:15px;border-radius:50%;
+    display:none;align-items:center;justify-content:center}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#8b83ff);
+    display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;cursor:pointer;position:relative}
+.user-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);
+    border:1px solid var(--border);border-radius:12px;padding:.5rem;min-width:180px;
+    z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.4);display:none}
+.user-menu.open{display:block}
+.user-menu-name{padding:.5rem .75rem;font-size:.8rem;color:var(--muted);border-bottom:1px solid var(--border);margin-bottom:.35rem}
+.user-menu button{width:100%;text-align:left;background:none;border:none;color:var(--text);
+    padding:.5rem .75rem;border-radius:8px;font-family:'Inter',sans-serif;font-size:.85rem;cursor:pointer}
+.user-menu button:hover{background:var(--border)}
+.user-menu .sign-out{color:var(--red)}
+
+/* LAYOUT */
+.page{display:none;padding:1.5rem 1.25rem;max-width:1150px;margin:0 auto}
+.page.active{display:block}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.9rem;margin-bottom:1.5rem}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;transition:border-color .2s}
+.kpi:hover{border-color:var(--accent)}
+.kpi-label{font-size:.73rem;color:var(--muted);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.4px}
+.kpi-value{font-size:1.55rem;font-weight:700}
+.kpi-value.green{color:var(--green)}.kpi-value.orange{color:var(--orange)}.kpi-value.purple{color:var(--purple)}
+
+/* AI SUMMARY BAR */
+.ai-summary-bar{background:linear-gradient(135deg,rgba(108,99,255,.12),rgba(52,168,83,.08));
+    border:1px solid rgba(108,99,255,.25);border-radius:14px;padding:1rem 1.25rem;
+    margin-bottom:1.25rem;display:flex;gap:.75rem;align-items:flex-start}
+.ai-summary-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem}
+.ai-summary-text{font-size:.85rem;line-height:1.6;color:var(--text);flex:1}
+.ai-summary-text em{color:var(--muted);font-style:normal}
+.btn-refresh-summary{background:none;border:1px solid var(--border);color:var(--muted);
+    border-radius:8px;padding:.3rem .65rem;font-size:.75rem;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-refresh-summary:hover{border-color:var(--accent);color:var(--accent)}
+
+/* TOOLBAR */
+.toolbar{display:flex;flex-wrap:wrap;gap:.65rem;align-items:center;margin-bottom:1.2rem}
+.toolbar input[type=text]{flex:1;min-width:180px;background:var(--surface);
+    border:1px solid var(--border);border-radius:10px;padding:.6rem .9rem;
+    color:var(--text);font-family:'Inter',sans-serif;font-size:.875rem;outline:none}
+.toolbar input[type=text]:focus{border-color:var(--accent)}
+.toolbar select{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:.6rem .8rem;color:var(--text);font-family:'Inter',sans-serif;font-size:.85rem;cursor:pointer;outline:none}
+.btn{padding:.6rem 1rem;border-radius:10px;border:none;font-family:'Inter',sans-serif;
+    font-size:.85rem;font-weight:500;cursor:pointer;transition:opacity .2s,transform .1s}
+.btn:hover{opacity:.85}.btn:active{transform:scale(.98)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-outline:hover{color:var(--text);border-color:var(--muted)}
+.btn-green{background:rgba(34,197,94,.15);color:var(--green)}
+.btn-purple{background:rgba(168,85,247,.15);color:var(--purple)}
+
+/* PRODUCT GRID */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:1.2rem;transition:border-color .2s,transform .15s}
+.product-card:hover{border-color:rgba(108,99,255,.4);transform:translateY(-2px)}
+.product-card.priority-high{border-left:3px solid var(--red)}
+.product-card.priority-medium{border-left:3px solid var(--orange)}
+.product-card.priority-low{border-left:3px solid var(--blue)}
+.card-top{display:flex;gap:.7rem;align-items:flex-start;margin-bottom:.85rem}
+.card-img{width:46px;height:46px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.card-img-ph{width:46px;height:46px;border-radius:10px;background:var(--surface2);
+    display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.card-title{font-size:.88rem;font-weight:600;line-height:1.3;margin-bottom:.18rem}
+.card-sub{font-size:.73rem;color:var(--muted)}
+.price-row{display:flex;align-items:baseline;gap:.45rem;margin-bottom:.4rem}
+.price-now{font-size:1.35rem;font-weight:700}
+.price-change{font-size:.75rem;font-weight:500;padding:.12rem .4rem;border-radius:6px}
+.price-change.up{background:rgba(255,77,109,.15);color:var(--red)}
+.price-change.down{background:rgba(34,197,94,.15);color:var(--green)}
+.target-row{font-size:.78rem;color:var(--muted);margin-bottom:.6rem}
+.target-row span{color:var(--text);font-weight:500}
+
+/* Store comparison mini-bar */
+.store-compare{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.7rem}
+.store-pill{font-size:.7rem;padding:.18rem .5rem;border-radius:20px;background:var(--surface2);
+    border:1px solid var(--border)}
+.store-pill.lowest{border-color:var(--green);color:var(--green)}
+
+/* AI insight */
+.ai-insight{background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);
+    border-radius:10px;padding:.6rem .8rem;font-size:.78rem;color:var(--text);
+    line-height:1.5;margin-bottom:.7rem;display:none}
+.ai-insight.show{display:block}
+.ai-insight-loading{color:var(--muted);font-style:italic}
+
+.rec-badge{display:inline-block;font-size:.73rem;font-weight:600;padding:.2rem .6rem;border-radius:20px;margin-bottom:.7rem}
+.rec-green{background:rgba(34,197,94,.15);color:var(--green)}
+.rec-blue{background:rgba(59,130,246,.15);color:var(--blue)}
+.rec-orange{background:rgba(245,158,11,.15);color:var(--orange)}
+.rec-red{background:rgba(255,77,109,.15);color:var(--red)}
+.rec-yellow{background:rgba(234,179,8,.15);color:var(--yellow)}
+
+.card-actions{display:flex;gap:.4rem;flex-wrap:wrap}
+.card-actions .btn{font-size:.75rem;padding:.38rem .7rem;border-radius:8px}
+.btn-scrape{background:rgba(108,99,255,.15);color:var(--accent)}
+.btn-price{background:rgba(34,197,94,.15);color:var(--green)}
+.btn-ai{background:linear-gradient(135deg,rgba(26,115,232,.2),rgba(52,168,83,.2));color:#7cb9ff}
+.btn-del{background:rgba(255,77,109,.1);color:var(--red)}
+
+/* EMPTY */
+.empty{text-align:center;padding:3.5rem 1rem;color:var(--muted);grid-column:1/-1}
+.empty-icon{font-size:2.8rem;margin-bottom:.85rem}
+.empty p{font-size:.88rem;margin-bottom:1.1rem}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);
+    display:none;align-items:center;justify-content:center;z-index:300;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;
+    padding:1.75rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
+.modal h2{font-size:1.05rem;margin-bottom:1.1rem}
+.form-group{margin-bottom:.9rem}
+.form-group label{display:block;font-size:.77rem;color:var(--muted);margin-bottom:.32rem;text-transform:uppercase;letter-spacing:.4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:#12141e;
+    border:1px solid var(--border);border-radius:10px;padding:.68rem .9rem;color:var(--text);
+    font-family:'Inter',sans-serif;font-size:.875rem;outline:none}
+.form-group textarea{resize:vertical;min-height:65px}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent)}
+.modal-footer{display:flex;gap:.65rem;justify-content:flex-end;margin-top:1.1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+
+/* ALERTS PANEL */
+.alerts-panel{position:fixed;top:58px;right:.75rem;width:310px;max-height:70vh;overflow-y:auto;
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:.9rem;
+    z-index:200;display:none;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.alerts-panel.open{display:block}
+.alert-item{padding:.65rem;border-radius:9px;background:var(--surface2);margin-bottom:.4rem;
+    font-size:.8rem;line-height:1.5;border-left:3px solid var(--border);cursor:pointer}
+.alert-item.unread{border-left-color:var(--orange)}
+.alert-time{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+
+/* BUDGET PAGE */
+.budget-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.budget-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.2rem}
+.budget-name{font-size:.95rem;font-weight:600;margin-bottom:.3rem}
+.budget-meta{font-size:.78rem;color:var(--muted);margin-bottom:.85rem}
+.budget-bar-track{height:8px;background:var(--border);border-radius:20px;overflow:hidden;margin-bottom:.5rem}
+.budget-bar-fill{height:100%;border-radius:20px;background:var(--green);transition:width .4s}
+.budget-bar-fill.warn{background:var(--orange)}
+.budget-bar-fill.over{background:var(--red)}
+.budget-amounts{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.85rem}
+.budget-amounts .spent{font-weight:600}
+.budget-actions{display:flex;gap:.5rem}
+
+/* WISHLIST PAGE */
+.wishlist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem}
+.wishlist-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:1.1rem;cursor:pointer;transition:border-color .2s}
+.wishlist-card:hover{border-color:var(--accent)}
+.wishlist-card.selected{border-color:var(--accent);background:rgba(108,99,255,.08)}
+.wishlist-icon{font-size:1.6rem;margin-bottom:.4rem}
+.wishlist-name{font-weight:600;font-size:.9rem}
+.wishlist-count{font-size:.78rem;color:var(--muted)}
+
+/* AI CHAT */
+.chat-fab{position:fixed;bottom:1.5rem;right:1.5rem;width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),#8b83ff);border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+    box-shadow:0 4px 20px rgba(108,99,255,.5);z-index:400;transition:transform .2s}
+.chat-fab:hover{transform:scale(1.08)}
+.chat-window{position:fixed;bottom:4.5rem;right:1.5rem;width:340px;height:480px;
+    background:var(--surface);border:1px solid var(--border);border-radius:18px;
+    display:none;flex-direction:column;z-index:400;overflow:hidden;
+    box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.chat-window.open{display:flex}
+.chat-header{padding:.85rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.55rem}
+.chat-header-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#1a73e8,#34a853);
+    display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.chat-header-title{font-size:.88rem;font-weight:600;flex:1}
+.chat-header-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem}
+.chat-messages{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.6rem}
+.chat-msg{max-width:82%;font-size:.82rem;line-height:1.55;padding:.6rem .85rem;border-radius:12px}
+.chat-msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-msg.ai{background:var(--surface2);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+.chat-msg.ai.loading{color:var(--muted);font-style:italic}
+.chat-input-row{padding:.75rem;border-top:1px solid var(--border);display:flex;gap:.5rem}
+.chat-input-row input{flex:1;background:#12141e;border:1px solid var(--border);border-radius:10px;
+    padding:.55rem .8rem;color:var(--text);font-family:'Inter',sans-serif;font-size:.83rem;outline:none}
+.chat-input-row input:focus{border-color:var(--accent)}
+.chat-send{background:var(--accent);border:none;border-radius:10px;color:#fff;
+    padding:.5rem .75rem;cursor:pointer;font-size:.9rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:.7rem 1.1rem;font-size:.83rem;z-index:999;animation:slideUp .3s ease;
+    box-shadow:0 6px 20px rgba(0,0,0,.3);white-space:nowrap}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%)}}
+
+/* SPINNER */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);
+    border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* LOADING */
+#loadingScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:500}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .kpi-row{grid-template-columns:1fr 1fr}
+  .nav-center{display:none}
+  .chat-window{width:calc(100vw - 2rem);right:1rem}
+  .form-row{grid-template-columns:1fr}
+}
+
+.section-title{font-size:1rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.compare-selected{display:flex;gap:.5rem;margin-bottom:.85rem;flex-wrap:wrap}
+.compare-chip{background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);
+    color:var(--accent);font-size:.78rem;padding:.25rem .65rem;border-radius:20px;
+    display:flex;align-items:center;gap:.35rem}
+.compare-chip button{background:none;border:none;color:var(--accent);cursor:pointer;font-size:.9rem;padding:0}
+.compare-result{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem;margin-top:1rem;font-size:.84rem;line-height:1.7}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🤖</div>
+    Price Agent <span>AI</span>
+  </div>
+  <div class="nav-center">
+    <button class="nav-tab active" onclick="showPage('products')">📦 Products</button>
+    <button class="nav-tab" onclick="showPage('wishlists')">❤️ Wishlists</button>
+    <button class="nav-tab" onclick="showPage('budgets')">💰 Budget</button>
+    <button class="nav-tab" onclick="showPage('compare')">⚖️ Compare</button>
+  </div>
+  <div class="nav-right">
+    <span class="gemini-badge" id="geminiBadge">✨ Gemini AI</span>
+    <button class="alert-bell" onclick="toggleAlerts()">🔔<div class="alert-badge" id="alertBadge"></div></button>
+    <div class="avatar" id="avatarBtn" onclick="toggleUserMenu()">
+      <span id="avatarInitial">?</span>
+      <div class="user-menu" id="userMenu">
+        <div class="user-menu-name" id="userMenuName">Loading…</div>
+        <button onclick="showPage('budgets')">💰 Budget Tracker</button>
+        <button onclick="loadAiSummary()">✨ AI Daily Brief</button>
+        <button class="sign-out" onclick="signOut()">🚪 Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ALERTS PANEL -->
+<div class="alerts-panel" id="alertsPanel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem">
+    <strong style="font-size:.88rem">Alerts</strong>
+    <button class="btn btn-outline" style="font-size:.73rem;padding:.28rem .6rem" onclick="markAllRead()">Mark all read</button>
+  </div>
+  <div id="alertsList"><p style="color:var(--muted);font-size:.8rem">No alerts.</p></div>
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen"><div style="text-align:center"><div style="font-size:2.5rem;margin-bottom:.85rem">🤖</div><div style="color:var(--muted);font-size:.88rem">Loading Price Agent AI v3…</div></div></div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE: PRODUCTS -->
+<!-- ══════════════════════════════════════ -->
+<div class="page active" id="page-products">
+  <div class="kpi-row" id="kpiRow">
+    <div class="kpi"><div class="kpi-label">Tracking</div><div class="kpi-value" id="kpiTotal">—</div></div>
+    <div class="kpi"><div class="kpi-label">On Sale</div><div class="kpi-value green" id="kpiSale">—</div></div>
+    <div class="kpi"><div class="kpi-label">High Priority</div><div class="kpi-value orange" id="kpiHigh">—</div></div>
+    <div class="kpi"><div class="kpi-label">Savings</div><div class="kpi-value green" id="kpiSavings">—</div></div>
+    <div class="kpi"><div class="kpi-label">Wishlists</div><div class="kpi-value purple" id="kpiWl">—</div></div>
+    <div class="kpi"><div class="kpi-label">Budgets</div><div class="kpi-value purple" id="kpiBudgets">—</div></div>
+  </div>
+
+  <!-- AI Summary Bar -->
+  <div class="ai-summary-bar" id="aiSummaryBar">
+    <div class="ai-summary-icon">✨</div>
+    <div class="ai-summary-text" id="aiSummaryText"><em>Click refresh to get your AI daily brief…</em></div>
+    <button class="btn-refresh-summary" onclick="loadAiSummary()" id="summaryRefreshBtn">Refresh</button>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="searchInput" placeholder="🔍  Search products…" oninput="loadProducts()"/>
+    <select id="sortSelect" onchange="loadProducts()">
+      <option value="date_desc">Newest</option>
+      <option value="priority">Priority</option>
+      <option value="deal_score">Best Deals</option>
+      <option value="price_asc">Price ↑</option>
+      <option value="price_desc">Price ↓</option>
+      <option value="name">A–Z</option>
+      <option value="last_checked">Last Checked</option>
+    </select>
+    <select id="catFilter" onchange="loadProducts()">
+      <option value="">All Categories</option>
+      <option>Electronics</option><option>Fashion</option><option>Home</option>
+      <option>Sports</option><option>Beauty</option><option>Groceries</option><option>Other</option>
+    </select>
+    <select id="wlFilter" onchange="loadProducts()">
+      <option value="">All Wishlists</option>
+    </select>
+    <button class="btn btn-accent" onclick="openAddModal()">+ Add Product</button>
+  </div>
+
+  <div class="product-grid" id="productGrid">
+    <div class="empty" style="grid-column:1/-1"><div class="empty-icon">📦</div><p>Loading…</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE: WISHLISTS -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-wishlists">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+    <div class="section-title">❤️ Wishlists</div>
+    <button class="btn btn-accent" onclick="openWishlistModal()">+ New Wishlist</button>
+  </div>
+  <div class="wishlist-grid" id="wishlistGrid">
+    <div class="empty"><div class="empty-icon">❤️</div><p>No wishlists yet.</p></div>
+  </div>
+  <div id="wishlistProducts" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div class="section-title" id="activeWishlistName">Wishlist</div>
+      <button class="btn btn-outline" onclick="clearWishlistFilter()">← All</button>
+    </div>
+    <div class="product-grid" id="wishlistProductGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE: BUDGETS -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-budgets">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+    <div class="section-title">💰 Budget Tracker</div>
+    <button class="btn btn-accent" onclick="openBudgetModal()">+ New Budget</button>
+  </div>
+  <div class="budget-grid" id="budgetGrid">
+    <div class="empty"><div class="empty-icon">💰</div><p>No budgets yet. Create one to track spending!</p><button class="btn btn-accent" onclick="openBudgetModal()">+ New Budget</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE: COMPARE -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-compare">
+  <div class="section-title">⚖️ AI Product Comparison</div>
+  <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.1rem">Select 2–4 products and let Gemini AI compare them for you.</p>
+  <div class="compare-selected" id="compareSelected"></div>
+  <div class="product-grid" id="compareGrid"></div>
+  <button class="btn btn-accent" id="compareBtn" onclick="runComparison()" style="margin-top:1.1rem;display:none">✨ Compare with AI</button>
+  <div class="compare-result" id="compareResult" style="display:none"></div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- MODALS -->
+<!-- ══════════════════════════════════════ -->
+
+<!-- Add / Edit Product -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2 id="modalTitle">Add Product</h2>
+    <input type="hidden" id="editId"/>
+    <div class="form-group"><label>Product Name *</label><input type="text" id="fName" placeholder="e.g. Nike Air Max 270"/></div>
+    <div class="form-group"><label>Store 1 URL (auto-scrapes price)</label><input type="url" id="fUrl" placeholder="https://takealot.com/..."/></div>
+    <div class="form-group"><label>Store 2 URL (comparison)</label><input type="url" id="fUrl2" placeholder="https://loot.co.za/..."/></div>
+    <div class="form-group"><label>Store 3 URL (comparison)</label><input type="url" id="fUrl3" placeholder="https://incredible.co.za/..."/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Initial Price</label><input type="number" id="fPrice" placeholder="0.00" step="0.01"/></div>
+      <div class="form-group"><label>Target Price</label><input type="number" id="fTarget" placeholder="0.00" step="0.01"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label>
+        <select id="fCat"><option>Other</option><option>Electronics</option><option>Fashion</option>
+          <option>Home</option><option>Sports</option><option>Beauty</option><option>Groceries</option></select>
+      </div>
+      <div class="form-group"><label>Currency</label>
+        <select id="fCur"><option>ZAR</option><option>USD</option><option>EUR</option><option>GBP</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Priority</label>
+        <select id="fPri"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select>
+      </div>
+      <div class="form-group"><label>Add to Wishlist</label><select id="fWl"><option value="">None</option></select></div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="fNotes" placeholder="Size, colour, model…"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addModal')">Cancel</button>
+      <button class="btn btn-accent" id="saveBtn" onclick="saveProduct()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Price Update -->
+<div class="modal-overlay" id="priceModal">
+  <div class="modal" style="max-width:340px">
+    <h2>Update Price</h2>
+    <input type="hidden" id="pricePid"/>
+    <div class="form-group"><label>New Price</label><input type="number" id="priceInput" placeholder="0.00" step="0.01"/></div>
+    <div class="form-group"><label>Note (optional)</label><input type="text" id="priceNote" placeholder="e.g. Black Friday deal"/></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('priceModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitPrice()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Wishlist -->
+<div class="modal-overlay" id="wishlistModal">
+  <div class="modal" style="max-width:360px">
+    <h2>New Wishlist</h2>
+    <div class="form-group"><label>Name</label><input type="text" id="wlName" placeholder="e.g. Tech Wishlist"/></div>
+    <div class="form-group"><label>Emoji</label>
+      <select id="wlEmoji"><option>📋</option><option>❤️</option><option>⭐</option><option>🎯</option>
+        <option>🛒</option><option>🎁</option><option>📱</option><option>👟</option><option>🏠</option></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('wishlistModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="createWishlist()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Budget -->
+<div class="modal-overlay" id="budgetModal">
+  <div class="modal" style="max-width:400px">
+    <h2>New Budget</h2>
+    <div class="form-group"><label>Budget Name</label><input type="text" id="bName" placeholder="e.g. Tech Budget"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Amount</label><input type="number" id="bAmount" placeholder="5000" step="0.01"/></div>
+      <div class="form-group"><label>Currency</label>
+        <select id="bCur"><option>ZAR</option><option>USD</option><option>EUR</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Period</label>
+        <select id="bPeriod"><option value="monthly">Monthly</option><option value="weekly">Weekly</option><option value="yearly">Yearly</option></select>
+      </div>
+      <div class="form-group"><label>Category</label>
+        <select id="bCat"><option value="All">All</option><option>Electronics</option><option>Fashion</option>
+          <option>Home</option><option>Sports</option><option>Beauty</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('budgetModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="createBudget()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Spend Modal -->
+<div class="modal-overlay" id="spendModal">
+  <div class="modal" style="max-width:320px">
+    <h2>Add Spending</h2>
+    <input type="hidden" id="spendBid"/>
+    <div class="form-group"><label>Amount Spent</label><input type="number" id="spendAmount" placeholder="0.00" step="0.01"/></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('spendModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitSpend()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI Chat -->
+<button class="chat-fab" onclick="toggleChat()" title="Ask AI">✨</button>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-header-icon">🤖</div>
+    <div class="chat-header-title">Price AI Assistant</div>
+    <button class="chat-header-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg ai">Hi! I'm your AI price assistant powered by Gemini. Ask me anything — "Is now a good time to buy headphones?" or "Which product should I buy first?" 💡</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask anything about prices…" onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp }                              from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+const firebaseConfig={apiKey:"AIzaSyDhnvTWF6LLihCxEcZo8xt7OXQsy_5tu_A",authDomain:"ai-resume-dc360.firebaseapp.com",
+  projectId:"ai-resume-dc360",storageBucket:"ai-resume-dc360.firebasestorage.app",
+  messagingSenderId:"564565363505",appId:"1:564565363505:web:181c71990afd8354aebe10"};
+
+const firebaseApp=initializeApp(firebaseConfig);
+const auth=getAuth(firebaseApp);
+
+onAuthStateChanged(auth, user=>{
+  if(!user){window.location.href='/login';return}
+  const name=user.displayName||user.email||'User';
+  document.getElementById('avatarInitial').textContent=name.charAt(0).toUpperCase();
+  document.getElementById('userMenuName').textContent=user.email;
+  document.getElementById('loadingScreen').style.display='none';
+  window._firebaseAuth=auth;
+  initApp();
+});
+
+window.signOut=async()=>{
+  await fbSignOut(auth);
+  await fetch('/api/auth/logout',{method:'POST'});
+  window.location.href='/login';
+};
+</script>
+
+<script>
+// ═══════════════════════════════════════
+// APP INIT
+// ═══════════════════════════════════════
+// API helper: consistent errors, auth redirects and JSON handling.
+async function api(path, options={}){
+  const opts={...options,headers:{'Content-Type':'application/json',...(options.headers||{})}};
+  const r=await fetch(path,opts);
+  let data={};
+  try{data=await r.json()}catch(_){data={}}
+  if(r.status===401){window.location.href='/login';throw new Error('Session expired. Please sign in again.')}
+  if(!r.ok) throw new Error(data.error||`Request failed (${r.status})`);
+  return data;
+}
+
+let _wishlists=[];
+let _compareIds=new Set();
+let _currentPage='products';
+
+function initApp(){
+  loadDashboard();
+  loadProducts();
+  loadAlerts();
+  loadWishlists();
+  setInterval(loadDashboard,60000);
+  setInterval(loadAlerts,30000);
+}
+
+function showPage(name){
+  _currentPage=name;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const tabs=['products','wishlists','budgets','compare'];
+  const tab=document.querySelectorAll('.nav-tab')[tabs.indexOf(name)];
+  if(tab) tab.classList.add('active');
+  if(name==='budgets') loadBudgets();
+  if(name==='wishlists') loadWishlistPage();
+  if(name==='compare') loadCompareGrid();
+}
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+async function loadDashboard(){
+  const d=await api('/api/dashboard');
+  document.getElementById('kpiTotal').textContent=d.total_products;
+  document.getElementById('kpiSale').textContent=d.on_sale;
+  document.getElementById('kpiHigh').textContent=d.high_priority;
+  document.getElementById('kpiSavings').textContent='R '+d.total_savings.toFixed(2);
+  document.getElementById('kpiWl').textContent=d.wishlists;
+  document.getElementById('kpiBudgets').textContent=d.budgets;
+  if(d.gemini_active) document.getElementById('geminiBadge').classList.add('on');
+}
+
+async function loadAiSummary(){
+  const el=document.getElementById('aiSummaryText');
+  const btn=document.getElementById('summaryRefreshBtn');
+  el.innerHTML='<em>✨ Getting your AI brief…</em>';
+  btn.disabled=true;
+  try{
+    const d=await api('/api/ai/summary');
+    el.textContent=d.summary;
+  }catch(e){ el.textContent='Could not load AI summary.'; }
+  btn.disabled=false;
+}
+
+// ═══════════════════════════════════════
+// PRODUCTS
+// ═══════════════════════════════════════
+const CAT_ICONS={Electronics:'📱',Fashion:'👟',Home:'🏠',Sports:'⚽',Beauty:'💄',Groceries:'🛒',Other:'📦'};
+
+async function loadProducts(){
+  const search=document.getElementById('searchInput').value;
+  const sort=document.getElementById('sortSelect').value;
+  const cat=document.getElementById('catFilter').value;
+  const wl=document.getElementById('wlFilter').value;
+  const prods=await api(`/api/products?search=${encodeURIComponent(search)}&sort=${sort}&cat=${encodeURIComponent(cat)}&wishlist=${wl}`);
+  renderProducts(prods,'productGrid');
+}
+
+function renderProducts(prods,gridId){
+  const grid=document.getElementById(gridId);
+  if(!prods.length){
+    grid.innerHTML=`<div class="empty"><div class="empty-icon">📦</div><p>No products found.</p><button class="btn btn-accent" onclick="openAddModal()">+ Add Product</button></div>`;
+    return;
+  }
+  grid.innerHTML=prods.map(p=>{
+    const cur=p.currency||'ZAR';
+    const price=p.current_price ? cur+' '+p.current_price.toFixed(2) : '—';
+    const icon=CAT_ICONS[p.category]||'📦';
+    let change='',changeClass='';
+    if(p.current_price&&p.prev_price){
+      const pct=(p.current_price-p.prev_price)/p.prev_price*100;
+      if(Math.abs(pct)>0.1){change=(pct>0?'▲':'▼')+Math.abs(pct).toFixed(1)+'%';changeClass=pct>0?'up':'down'}
+    }
+    const stores=p.store_prices||[];
+    const minStore=stores.length?stores.reduce((a,b)=>a.price<b.price?a:b):null;
+    const storeHtml=stores.length?`<div class="store-compare">${stores.map(s=>`
+      <span class="store-pill ${s===minStore?'lowest':''}">${s.store_name}: ${cur} ${s.price.toFixed(2)}${s===minStore?' ✓':''}</span>`).join('')}</div>`:'';
+    const hasInsight=p.ai_insight&&p.ai_insight.length>10;
+    const imgEl=p.image_url?`<img class="card-img" src="${p.image_url}" onerror="this.style.display='none'" alt=""/>`:`<div class="card-img-ph">${icon}</div>`;
+    const wlName=_wishlists.find(w=>w.id===p.wishlist_id);
+    return `<div class="product-card priority-${p.priority||'medium'}" id="card-${p.id}">
+      <div class="card-top">
+        ${imgEl}
+        <div>
+          <div class="card-title">${esc(p.name)}</div>
+          <div class="card-sub">${p.category||'Other'} · ${(p.priority||'medium').toUpperCase()}${wlName?' · '+wlName.emoji+' '+wlName.name:''}</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-now">${price}</div>
+        ${change?`<div class="price-change ${changeClass}">${change}</div>`:''}
+      </div>
+      <div class="target-row">Target: <span>${p.target_price?cur+' '+p.target_price.toFixed(2):'Not set'}</span> · ${p.history_count||0} entries</div>
+      ${storeHtml}
+      <div class="ai-insight ${hasInsight?'show':''}" id="insight-${p.id}">${esc(p.ai_insight||'')}</div>
+      <div class="card-actions">
+        ${p.url?`<button class="btn btn-scrape" onclick="scrape(${p.id})">🔄</button>`:''}
+        <button class="btn btn-price" onclick="openPriceModal(${p.id})">💰 Price</button>
+        <button class="btn btn-ai" onclick="getAiInsight(${p.id})">✨ AI</button>
+        <button class="btn btn-outline" onclick="openEditModal(${JSON.stringify(p).replace(/"/g,'&quot;')})">✏️</button>
+        <button class="btn btn-del" onclick="deleteProduct(${p.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function getAiInsight(pid){
+  const insightEl=document.getElementById('insight-'+pid);
+  insightEl.className='ai-insight show ai-insight-loading';
+  insightEl.textContent='✨ Asking Gemini AI…';
+  try{
+    const d=await api(`/api/ai/explain/${pid}`);
+    insightEl.className='ai-insight show';
+    insightEl.textContent=d.insight;
+  }catch(e){
+    insightEl.className='ai-insight show';
+    insightEl.textContent='Could not get AI insight. Check your GEMINI_API_KEY.';
+  }
+}
+
+// ═══════════════════════════════════════
+// ALERTS
+// ═══════════════════════════════════════
+async function loadAlerts(){
+  const data=await api('/api/alerts');
+  const unread=data.filter(a=>!a.is_read);
+  const badge=document.getElementById('alertBadge');
+  badge.textContent=unread.length;
+  badge.style.display=unread.length?'flex':'none';
+  const list=document.getElementById('alertsList');
+  if(!data.length){list.innerHTML='<p style="color:var(--muted);font-size:.8rem">No alerts.</p>';return}
+  list.innerHTML=data.slice(0,20).map(a=>`
+    <div class="alert-item ${a.is_read?'':'unread'}" onclick="markRead(${a.id},this)">
+      <div>${esc(a.message)}</div>
+      <div class="alert-time">${new Date(a.created_at).toLocaleString()}</div>
+    </div>`).join('');
+}
+
+async function markRead(id,el){
+  await fetch('/api/alerts/'+id+'/read',{method:'POST'});
+  el.classList.remove('unread');
+  loadAlerts();
+}
+
+async function markAllRead(){
+  await fetch('/api/alerts/read-all',{method:'POST'});
+  loadAlerts();
+}
+
+// ═══════════════════════════════════════
+// ADD / EDIT
+// ═══════════════════════════════════════
+function openAddModal(){
+  document.getElementById('editId').value='';
+  document.getElementById('modalTitle').textContent='Add Product';
+  ['fName','fUrl','fUrl2','fUrl3','fPrice','fTarget','fNotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fCat').value='Other';
+  document.getElementById('fCur').value='ZAR';
+  document.getElementById('fPri').value='medium';
+  document.getElementById('fWl').value='';
+  document.getElementById('addModal').classList.add('open');
+}
+
+function openEditModal(p){
+  document.getElementById('editId').value=p.id;
+  document.getElementById('modalTitle').textContent='Edit Product';
+  document.getElementById('fName').value=p.name||'';
+  document.getElementById('fUrl').value=p.url||'';
+  document.getElementById('fUrl2').value=p.url2||'';
+  document.getElementById('fUrl3').value=p.url3||'';
+  document.getElementById('fPrice').value=p.current_price||'';
+  document.getElementById('fTarget').value=p.target_price||'';
+  document.getElementById('fNotes').value=p.notes||'';
+  document.getElementById('fCat').value=p.category||'Other';
+  document.getElementById('fCur').value=p.currency||'ZAR';
+  document.getElementById('fPri').value=p.priority||'medium';
+  document.getElementById('fWl').value=p.wishlist_id||'';
+  document.getElementById('addModal').classList.add('open');
+}
+
+async function saveProduct(){
+  const pid=document.getElementById('editId').value;
+  const name=document.getElementById('fName').value.trim();
+  if(!name){toast('Product name is required.','red');return}
+  const btn=document.getElementById('saveBtn');
+  btn.innerHTML='<span class="spinner"></span>';btn.disabled=true;
+  const body={
+    name,url:document.getElementById('fUrl').value.trim(),
+    url2:document.getElementById('fUrl2').value.trim(),
+    url3:document.getElementById('fUrl3').value.trim(),
+    target_price:document.getElementById('fTarget').value||null,
+    initial_price:document.getElementById('fPrice').value||null,
+    category:document.getElementById('fCat').value,
+    currency:document.getElementById('fCur').value,
+    priority:document.getElementById('fPri').value,
+    notes:document.getElementById('fNotes').value.trim(),
+    wishlist_id:document.getElementById('fWl').value||null,
+  };
+  const r=await fetch(pid?`/api/products/${pid}`:'/api/products',
+    {method:pid?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d=await r.json();
+  btn.innerHTML='Save';btn.disabled=false;
+  if(d.error){toast(d.error,'red');return}
+  closeModal('addModal');
+  toast(pid?'Updated!':d.scraped?'✅ Added & price scraped!':'✅ Added!');
+  loadProducts();loadDashboard();
+}
+
+function openPriceModal(pid){
+  document.getElementById('pricePid').value=pid;
+  document.getElementById('priceInput').value='';
+  document.getElementById('priceNote').value='';
+  document.getElementById('priceModal').classList.add('open');
+}
+
+async function submitPrice(){
+  const pid=document.getElementById('pricePid').value;
+  const price=document.getElementById('priceInput').value;
+  const note=document.getElementById('priceNote').value;
+  if(!price){toast('Enter a price.','red');return}
+  const r=await fetch(`/api/products/${pid}/price`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({price:parseFloat(price),note})});
+  const d=await r.json();
+  if(d.error){toast(d.error,'red');return}
+  closeModal('priceModal');
+  if(d.alerts.length) toast('🎯 Alert triggered!','orange');
+  else toast('Price updated!');
+  loadProducts();loadDashboard();loadAlerts();
+}
+
+async function scrape(pid){
+  toast('🔄 Fetching latest price…');
+  const r=await fetch(`/api/products/${pid}/scrape`,{method:'POST'});
+  const d=await r.json();
+  if(d.error){toast(d.error,'red');return}
+  toast('✅ Price refreshed: '+d.price);
+  loadProducts();loadDashboard();
+}
+
+async function deleteProduct(pid){
+  if(!confirm('Delete this product and all its history?'))return;
+  await fetch('/api/products/'+pid,{method:'DELETE'});
+  toast('Deleted.');
+  loadProducts();loadDashboard();
+}
+
+// ═══════════════════════════════════════
+// WISHLISTS
+// ═══════════════════════════════════════
+async function loadWishlists(){
+  const r=await fetch('/api/wishlists');
+  _wishlists=await r.json();
+  const wlSel=document.getElementById('wlFilter');
+  const fWl=document.getElementById('fWl');
+  wlSel.innerHTML='<option value="">All Wishlists</option>'+_wishlists.map(w=>`<option value="${w.id}">${w.emoji} ${esc(w.name)}</option>`).join('');
+  fWl.innerHTML='<option value="">None</option>'+_wishlists.map(w=>`<option value="${w.id}">${w.emoji} ${esc(w.name)}</option>`).join('');
+}
+
+async function loadWishlistPage(){
+  await loadWishlists();
+  const grid=document.getElementById('wishlistGrid');
+  if(!_wishlists.length){
+    grid.innerHTML='<div class="empty"><div class="empty-icon">❤️</div><p>No wishlists yet.</p><button class="btn btn-accent" onclick="openWishlistModal()">+ Create Wishlist</button></div>';
+    return;
+  }
+  grid.innerHTML=_wishlists.map(w=>`
+    <div class="wishlist-card" onclick="showWishlist(${w.id},'${esc(w.emoji+' '+w.name)}')">
+      <div class="wishlist-icon">${w.emoji}</div>
+      <div class="wishlist-name">${esc(w.name)}</div>
+      <div class="wishlist-count">${w.product_count} products</div>
+      <div style="margin-top:.65rem;display:flex;gap:.4rem">
+        <button class="btn btn-del" style="font-size:.73rem;padding:.3rem .6rem" onclick="event.stopPropagation();deleteWishlist(${w.id})">🗑 Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+async function showWishlist(id,name){
+  document.getElementById('activeWishlistName').textContent=name;
+  document.getElementById('wishlistProducts').style.display='block';
+  const r=await fetch(`/api/products?wishlist=${id}`);
+  const prods=await r.json();
+  renderProducts(prods,'wishlistProductGrid');
+}
+
+function clearWishlistFilter(){
+  document.getElementById('wishlistProducts').style.display='none';
+  document.querySelectorAll('.wishlist-card').forEach(c=>c.classList.remove('selected'));
+}
+
+function openWishlistModal(){document.getElementById('wishlistModal').classList.add('open')}
+
+async function createWishlist(){
+  const name=document.getElementById('wlName').value.trim();
+  const emoji=document.getElementById('wlEmoji').value;
+  if(!name){toast('Enter a name.','red');return}
+  const r=await fetch('/api/wishlists',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,emoji})});
+  const d=await r.json();
+  if(d.error){toast(d.error,'red');return}
+  closeModal('wishlistModal');
+  toast('Wishlist created!');
+  loadWishlists();loadWishlistPage();
+}
+
+async function deleteWishlist(id){
+  if(!confirm('Delete this wishlist? Products will be unassigned.'))return;
+  await fetch('/api/wishlists/'+id,{method:'DELETE'});
+  toast('Wishlist deleted.');
+  loadWishlists();loadWishlistPage();
+}
+
+// ═══════════════════════════════════════
+// BUDGETS
+// ═══════════════════════════════════════
+async function loadBudgets(){
+  const budgets=await api('/api/budgets');
+  const grid=document.getElementById('budgetGrid');
+  if(!budgets.length){
+    grid.innerHTML='<div class="empty"><div class="empty-icon">💰</div><p>No budgets yet!</p><button class="btn btn-accent" onclick="openBudgetModal()">+ New Budget</button></div>';
+    return;
+  }
+  grid.innerHTML=budgets.map(b=>{
+    const pct=b.amount>0?Math.min(b.spent/b.amount*100,100):0;
+    const fillClass=pct>=100?'over':pct>=80?'warn':'';
+    const remaining=b.amount-b.spent;
+    return `<div class="budget-card">
+      <div class="budget-name">${esc(b.name)}</div>
+      <div class="budget-meta">${b.period} · ${b.category} · ${b.currency}</div>
+      <div class="budget-bar-track"><div class="budget-bar-fill ${fillClass}" style="width:${pct}%"></div></div>
+      <div class="budget-amounts">
+        <span class="spent">${b.currency} ${b.spent.toFixed(2)} spent</span>
+        <span style="color:var(--muted)">${remaining>=0?b.currency+' '+remaining.toFixed(2)+' left':'Over by '+b.currency+' '+Math.abs(remaining).toFixed(2)}</span>
+      </div>
+      <div style="font-size:.78rem;color:var(--muted);margin-bottom:.65rem">Budget: ${b.currency} ${b.amount.toFixed(2)} · ${pct.toFixed(0)}% used</div>
+      <div class="budget-actions">
+        <button class="btn btn-green" style="font-size:.75rem;padding:.38rem .7rem" onclick="openSpendModal(${b.id})">+ Spend</button>
+        <button class="btn btn-outline" style="font-size:.75rem;padding:.38rem .7rem" onclick="resetBudget(${b.id})">↺ Reset</button>
+        <button class="btn btn-del" style="font-size:.75rem;padding:.38rem .7rem" onclick="deleteBudget(${b.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openBudgetModal(){
+  document.getElementById('bName').value='';
+  document.getElementById('bAmount').value='';
+  document.getElementById('budgetModal').classList.add('open');
+}
+
+async function createBudget(){
+  const name=document.getElementById('bName').value.trim();
+  const amount=document.getElementById('bAmount').value;
+  if(!name||!amount){toast('Fill in name and amount.','red');return}
+  await fetch('/api/budgets',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name,amount:parseFloat(amount),currency:document.getElementById('bCur').value,
+      period:document.getElementById('bPeriod').value,category:document.getElementById('bCat').value})});
+  closeModal('budgetModal');toast('Budget created!');loadBudgets();loadDashboard();
+}
+
+function openSpendModal(bid){document.getElementById('spendBid').value=bid;document.getElementById('spendAmount').value='';document.getElementById('spendModal').classList.add('open')}
+
+async function submitSpend(){
+  const bid=document.getElementById('spendBid').value;
+  const amount=document.getElementById('spendAmount').value;
+  if(!amount){toast('Enter amount.','red');return}
+  await fetch(`/api/budgets/${bid}/spend`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:parseFloat(amount)})});
+  closeModal('spendModal');toast('Spending added!');loadBudgets();
+}
+
+async function resetBudget(bid){
+  if(!confirm('Reset this budget to zero?'))return;
+  await fetch(`/api/budgets/${bid}/reset`,{method:'POST'});
+  toast('Budget reset.');loadBudgets();
+}
+
+async function deleteBudget(bid){
+  if(!confirm('Delete this budget?'))return;
+  await fetch('/api/budgets/'+bid,{method:'DELETE'});
+  toast('Deleted.');loadBudgets();loadDashboard();
+}
+
+// ═══════════════════════════════════════
+// COMPARE
+// ═══════════════════════════════════════
+let _compareProds=[];
+
+async function loadCompareGrid(){
+  _compareProds=await api('/api/products');
+  const grid=document.getElementById('compareGrid');
+  grid.innerHTML=_compareProds.map(p=>{
+    const cur=p.currency||'ZAR';
+    const price=p.current_price?cur+' '+p.current_price.toFixed(2):'—';
+    const selected=_compareIds.has(p.id);
+    return `<div class="product-card ${selected?'priority-high':''}" id="cmp-${p.id}" onclick="toggleCompare(${p.id})" style="cursor:pointer">
+      <div class="card-title">${esc(p.name)}</div>
+      <div class="card-sub">${p.category||'Other'}</div>
+      <div style="font-size:1.1rem;font-weight:700;margin:.5rem 0">${price}</div>
+      <div style="font-size:.75rem;color:var(--muted)">Target: ${p.target_price?cur+' '+p.target_price.toFixed(2):'Not set'}</div>
+      ${selected?'<div style="margin-top:.6rem;font-size:.75rem;color:var(--accent);font-weight:600">✓ Selected</div>':''}
+    </div>`;
+  }).join('');
+  renderCompareSelected();
+}
+
+function toggleCompare(id){
+  if(_compareIds.has(id)){_compareIds.delete(id)}
+  else if(_compareIds.size<4){_compareIds.add(id)}
+  else{toast('Max 4 products for comparison.','orange');return}
+  loadCompareGrid();
+}
+
+function renderCompareSelected(){
+  const el=document.getElementById('compareSelected');
+  const btn=document.getElementById('compareBtn');
+  if(!_compareIds.size){el.innerHTML='';btn.style.display='none';return}
+  btn.style.display=_compareIds.size>=2?'block':'none';
+  el.innerHTML=[..._compareIds].map(id=>{
+    const p=_compareProds.find(x=>x.id===id);
+    return p?`<div class="compare-chip">${esc(p.name)}<button onclick="toggleCompare(${id})">✕</button></div>`:'';
+  }).join('');
+}
+
+async function runComparison(){
+  const el=document.getElementById('compareResult');
+  el.style.display='block';
+  el.innerHTML='✨ Asking Gemini AI to compare…';
+  const d=await api('/api/ai/compare',{method:'POST',body:JSON.stringify({ids:[..._compareIds]})});
+  el.textContent=d.comparison||d.error||'Could not compare.';
+}
+
+// ═══════════════════════════════════════
+// AI CHAT
+// ═══════════════════════════════════════
+function toggleChat(){document.getElementById('chatWindow').classList.toggle('open')}
+
+async function sendChat(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  const msgs=document.getElementById('chatMessages');
+  msgs.innerHTML+=`<div class="chat-msg user">${esc(msg)}</div>`;
+  msgs.innerHTML+=`<div class="chat-msg ai loading" id="chat-loading">✨ Thinking…</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  try{
+    const d=await api('/api/ai/chat',{method:'POST',body:JSON.stringify({message:msg})});
+    document.getElementById('chat-loading').remove();
+    msgs.innerHTML+=`<div class="chat-msg ai">${esc(d.response||d.error)}</div>`;
+  }catch(e){
+    const loader=document.getElementById('chat-loading'); if(loader) loader.remove();
+    msgs.innerHTML+=`<div class="chat-msg ai">${esc(e.message)}</div>`;
+  }
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ═══════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+function toggleAlerts(){
+  document.getElementById('alertsPanel').classList.toggle('open');
+  document.getElementById('userMenu').classList.remove('open');
+}
+
+function toggleUserMenu(){
+  document.getElementById('userMenu').classList.toggle('open');
+  document.getElementById('alertsPanel').classList.remove('open');
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#alertsPanel')&&!e.target.closest('.alert-bell'))
+    document.getElementById('alertsPanel').classList.remove('open');
+  if(!e.target.closest('#avatarBtn'))
+    document.getElementById('userMenu').classList.remove('open');
+  if(e.target.classList.contains('modal-overlay'))
+    e.target.classList.remove('open');
+});
+
+function toast(msg,color){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const el=document.createElement('div');
+  el.className='toast';
+  el.style.borderLeft='3px solid '+(color==='red'?'var(--red)':color==='orange'?'var(--orange)':'var(--green)');
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),3200);
+}
+
+function esc(str){
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Mobile nav (show tabs in a row below nav for small screens)
+if(window.innerWidth<=640){
+  const mobileNav=document.createElement('div');
+  mobileNav.style.cssText='display:flex;gap:.25rem;padding:.5rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto';
+  mobileNav.innerHTML=['📦 Products','❤️ Wishlists','💰 Budget','⚖️ Compare'].map((t,i)=>{
+    const pages=['products','wishlists','budgets','compare'];
+    return `<button onclick="showPage('${pages[i]}')" style="white-space:nowrap;padding:.4rem .75rem;border:1px solid var(--border);border-radius:8px;background:none;color:var(--muted);font-family:Inter,sans-serif;font-size:.78rem;cursor:pointer">${t}</button>`;
+  }).join('');
+  document.querySelector('nav').after(mobileNav);
+}
+</script>
+</body>
+</html>
