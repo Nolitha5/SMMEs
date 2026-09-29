@@ -1,0 +1,258 @@
+{
+  "registryVersion": 1,
+  "targetDomainCount": 5,
+  "targetCapabilityCount": 25,
+  "note": "Five runtime domains; 25 narrow agent capabilities. Runtime identity and capability identity are intentionally separate.",
+  "capabilities": [
+    {
+      "capabilityId": "D1",
+      "domain": "demand",
+      "runtimeAgent": "demand",
+      "name": "Sales History Analyzer",
+      "primaryOutput": "CleanDemandSeries",
+      "contractKind": "evidence",
+      "implementationStatus": "source-pending",
+      "sourceBranch": "Florah"
+    },
+    {
+      "capabilityId": "D2",
+      "domain": "demand",
+      "runtimeAgent": "demand",
+      "name": "Seasonality Detector",
+      "primaryOutput": "SeasonalityProfile",
+      "contractKind": "evidence",
+      "implementationStatus": "source-pending",
+      "sourceBranch": "Florah"
+    },
+    {
+      "capabilityId": "D3",
+      "domain": "demand",
+      "runtimeAgent": "demand",
+      "name": "Event & Promotion Signal Agent",
+      "primaryOutput": "DemandSignalAdjustment",
+      "contractKind": "evidence",
+      "implementationStatus": "source-pending",
+      "sourceBranch": "Florah"
+    },
+    {
+      "capabilityId": "D4",
+      "domain": "demand",
+      "runtimeAgent": "demand",
+      "name": "Forecast Generator",
+      "primaryOutput": "DemandForecast",
+      "contractKind": "evidence",
+      "implementationStatus": "contract-provisioned",
+      "sourceBranch": "Florah"
+    },
+    {
+      "capabilityId": "D5",
+      "domain": "demand",
+      "runtimeAgent": "demand",
+      "name": "Forecast Quality Monitor",
+      "primaryOutput": "ForecastQualityAlert",
+      "contractKind": "evidence",
+      "implementationStatus": "source-pending",
+      "sourceBranch": "Florah"
+    },
+    {
+      "capabilityId": "I1",
+      "domain": "inventory",
+      "runtimeAgent": "inventory",
+      "name": "Stock Monitor",
+      "primaryOutput": "InventoryPosition",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Thobeka-Ngwenya"
+    },
+    {
+      "capabilityId": "I2",
+      "domain": "inventory",
+      "runtimeAgent": "inventory",
+      "name": "Reorder Point Agent",
+      "primaryOutput": "ReorderNeed",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Thobeka-Ngwenya"
+    },
+    {
+      "capabilityId": "I3",
+      "domain": "inventory",
+      "runtimeAgent": "inventory",
+      "name": "Safety Stock Agent",
+      "primaryOutput": "SafetyStockTarget",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Thobeka-Ngwenya"
+    },
+    {
+      "capabilityId": "I4",
+      "domain": "inventory",
+      "runtimeAgent": "inventory",
+      "name": "Expiry & Slow-Stock Agent",
+      "primaryOutput": "StockRiskAlert",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Thobeka-Ngwenya"
+    },
+    {
+      "capabilityId": "I5",
+      "domain": "inventory",
+      "runtimeAgent": "inventory",
+      "name": "Inventory Exception Agent",
+      "primaryOutput": "InventoryException",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Thobeka-Ngwenya"
+    },
+    {
+      "capabilityId": "P1",
+      "domain": "pricing",
+      "runtimeAgent": "pricing",
+      "name": "Competitor Price Monitor",
+      "primaryOutput": "CompetitorPriceSignal",
+      "contractKind": "evidence",
+      "implementationStatus": "needs-decomposition",
+      "sourceBranch": "TIYANI-MANGANYI"
+    },
+    {
+      "capabilityId": "P2",
+      "domain": "pricing",
+      "runtimeAgent": "pricing",
+      "name": "Margin Guard Agent",
+      "primaryOutput": "AllowedPriceRange",
+      "contractKind": "evidence",
+      "implementationStatus": "needs-decomposition",
+      "sourceBranch": "TIYANI-MANGANYI"
+    },
+    {
+      "capabilityId": "P3",
+      "domain": "pricing",
+      "runtimeAgent": "pricing",
+      "name": "Demand Elasticity Estimator",
+      "primaryOutput": "ElasticityEstimate",
+      "contractKind": "evidence",
+      "implementationStatus": "needs-decomposition",
+      "sourceBranch": "TIYANI-MANGANYI"
+    },
+    {
+      "capabilityId": "P4",
+      "domain": "pricing",
+      "runtimeAgent": "pricing",
+      "name": "Markdown & Promotion Pricing Agent",
+      "primaryOutput": "PromoPriceCandidate",
+      "contractKind": "evidence",
+      "implementationStatus": "needs-decomposition",
+      "sourceBranch": "TIYANI-MANGANYI"
+    },
+    {
+      "capabilityId": "P5",
+      "domain": "pricing",
+      "runtimeAgent": "pricing",
+      "name": "Price Recommendation & Fairness Gate",
+      "primaryOutput": "PriceRecommendation",
+      "contractKind": "action",
+      "implementationStatus": "needs-decomposition",
+      "sourceBranch": "TIYANI-MANGANYI"
+    },
+    {
+      "capabilityId": "R1",
+      "domain": "procurement",
+      "runtimeAgent": "procurement",
+      "name": "Supplier Comparator",
+      "primaryOutput": "SupplierComparison",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Noosrat-Aziz_Niyi"
+    },
+    {
+      "capabilityId": "R2",
+      "domain": "procurement",
+      "runtimeAgent": "procurement",
+      "name": "Supplier Reliability Agent",
+      "primaryOutput": "SupplierReliabilityScore",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Noosrat-Aziz_Niyi"
+    },
+    {
+      "capabilityId": "R3",
+      "domain": "procurement",
+      "runtimeAgent": "procurement",
+      "name": "Lead-Time Risk Agent",
+      "primaryOutput": "LeadTimeRisk",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Noosrat-Aziz_Niyi"
+    },
+    {
+      "capabilityId": "R4",
+      "domain": "procurement",
+      "runtimeAgent": "procurement",
+      "name": "Purchase Order Recommender",
+      "primaryOutput": "PurchaseRecommendation",
+      "contractKind": "action",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Noosrat-Aziz_Niyi"
+    },
+    {
+      "capabilityId": "R5",
+      "domain": "procurement",
+      "runtimeAgent": "procurement",
+      "name": "Delivery & Invoice Reconciliation Agent",
+      "primaryOutput": "ProcurementException",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Noosrat-Aziz_Niyi"
+    },
+    {
+      "capabilityId": "C1",
+      "domain": "customer-engagement",
+      "runtimeAgent": "customer-engagement",
+      "name": "Customer Segmentation Agent",
+      "primaryOutput": "CustomerSegment",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Nduvho"
+    },
+    {
+      "capabilityId": "C2",
+      "domain": "customer-engagement",
+      "runtimeAgent": "customer-engagement",
+      "name": "At-Risk / Churn Agent",
+      "primaryOutput": "RetentionRisk",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Nduvho"
+    },
+    {
+      "capabilityId": "C3",
+      "domain": "customer-engagement",
+      "runtimeAgent": "customer-engagement",
+      "name": "Promotion Recommender",
+      "primaryOutput": "PromotionRecommendation",
+      "contractKind": "action-candidate",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Nduvho"
+    },
+    {
+      "capabilityId": "C4",
+      "domain": "customer-engagement",
+      "runtimeAgent": "customer-engagement",
+      "name": "Next-Best-Action Agent",
+      "primaryOutput": "CustomerAction",
+      "contractKind": "action",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Nduvho"
+    },
+    {
+      "capabilityId": "C5",
+      "domain": "customer-engagement",
+      "runtimeAgent": "customer-engagement",
+      "name": "Feedback & Sentiment Agent",
+      "primaryOutput": "FeedbackInsight",
+      "contractKind": "evidence",
+      "implementationStatus": "source-available",
+      "sourceBranch": "Nduvho"
+    }
+  ]
+}

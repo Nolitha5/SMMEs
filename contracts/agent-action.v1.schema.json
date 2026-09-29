@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/agent-action.v1.schema.json",
+  "title": "AgentActionV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actionId","businessId","actionType","sourceAgent","targetAgent","subjectType","subjectId","input","status","priority","contractVersion","schemaVersion","correlationId","idempotencyKey","createdAt","updatedAt"],
+  "properties": {
+    "actionId": {"type":"string","minLength":1},
+    "businessId": {"type":"string","minLength":1},
+    "actionType": {"type":"string","minLength":1},
+    "sourceAgent": {"type":"string","pattern":"^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "targetAgent": {"type":"string","minLength":1},
+    "subjectType": {"type":"string","minLength":1},
+    "subjectId": {"type":"string","minLength":1},
+    "input": {"type":"object"},
+    "status": {"enum":["proposed","approved","rejected","in-progress","completed","failed","cancelled"]},
+    "priority": {"enum":["low","medium","high","critical"]},
+    "contractVersion": {"const":1},
+    "schemaVersion": {"type":"integer","minimum":1},
+    "correlationId": {"type":"string","minLength":1},
+    "idempotencyKey": {"type":"string","minLength":1},
+    "createdAt": {"type":["string","object"]},
+    "updatedAt": {"type":["string","object"]},
+    "result": {"type":["object","null"]},
+    "lastError": {"type":["string","null"]}
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"price-recommendation-v1",
+  "title":"PriceRecommendation",
+  "type":"object",
+  "required":["product_id","current_price","proposed_price","margin_after_pct","fairness_checks","actionable","reason","source_version"],
+  "properties":{
+    "product_id":{"type":"string"},
+    "current_price":{"type":"number","minimum":0},
+    "proposed_price":{"type":"number","minimum":0},
+    "margin_after_pct":{"type":"number"},
+    "fairness_checks":{"type":"array","items":{"type":"string"}},
+    "actionable":{"type":"boolean"},
+    "reason":{"type":"string"},
+    "source_version":{"type":"string"}
+  }
+}

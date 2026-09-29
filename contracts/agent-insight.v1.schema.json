@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/agent-insight.v1.schema.json",
+  "title": "AgentInsightV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["insightId","businessId","insightType","sourceAgent","subjectType","subjectId","data","status","contractVersion","schemaVersion","createdAt","updatedAt"],
+  "properties": {
+    "insightId": {"type":"string","minLength":1},
+    "businessId": {"type":"string","minLength":1},
+    "insightType": {"type":"string","minLength":1},
+    "sourceAgent": {"type":"string","pattern":"^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "subjectType": {"type":"string","minLength":1},
+    "subjectId": {"type":"string","minLength":1},
+    "data": {"type":"object"},
+    "confidence": {"type":["number","null"],"minimum":0,"maximum":1},
+    "status": {"enum":["active","superseded","expired","dismissed"]},
+    "contractVersion": {"const":1},
+    "schemaVersion": {"type":"integer","minimum":1},
+    "correlationId": {"type":["string","null"]},
+    "createdAt": {"type":["string","object"]},
+    "updatedAt": {"type":["string","object"]},
+    "expiresAt": {"type":["string","object","null"]}
+  }
+}

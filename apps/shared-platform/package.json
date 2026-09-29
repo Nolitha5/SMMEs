@@ -1,0 +1,42 @@
+{
+  "name": "sme-shared-platform",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n API,WEB -c auto \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "node --watch server/index.mjs",
+    "dev:web": "vite --config web/vite.config.ts",
+    "build": "vite build --config web/vite.config.ts",
+    "check": "tsc -p web/tsconfig.json --noEmit",
+    "start": "node server/index.mjs",
+    "validate": "npm run check && npm run build && node scripts/validate.mjs",
+    "validate:data": "node scripts/validate-data-management.mjs",
+    "validate:process": "node scripts/validate-process-flow.mjs",
+    "validate:production": "node scripts/validate-production-deployment.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase": "^12.3.0",
+    "firebase-admin": "^13.4.0",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.9.1",
+    "papaparse": "^5.5.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.5.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.4.1",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.2",
+    "vite": "^6.1.0",
+    "@types/papaparse": "^5.3.16"
+  }
+}

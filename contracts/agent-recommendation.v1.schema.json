@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/agent-recommendation.v1.schema.json",
+  "title": "AgentRecommendationV1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "recommendationId",
+    "businessId",
+    "sourceOutputId",
+    "capabilityId",
+    "sourceAgent",
+    "domain",
+    "recommendationType",
+    "subjectType",
+    "subjectId",
+    "action",
+    "confidence",
+    "riskLevel",
+    "status",
+    "correlationId",
+    "createdAt",
+    "updatedAt",
+    "contractVersion",
+    "schemaVersion"
+  ],
+  "properties": {
+    "recommendationId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "sourceOutputId": {
+      "type": "string"
+    },
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^[DIPRC][1-5]$"
+    },
+    "sourceAgent": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "recommendationType": {
+      "type": "string"
+    },
+    "subjectType": {
+      "type": "string"
+    },
+    "subjectId": {
+      "type": "string"
+    },
+    "action": {
+      "type": "object"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "riskLevel": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ]
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "READY_FOR_REVIEW",
+        "APPROVED",
+        "MODIFIED",
+        "REJECTED",
+        "EXECUTED",
+        "EXPIRED"
+      ]
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "updatedAt": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "object",
+        "null"
+      ]
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 4
+    }
+  }
+}

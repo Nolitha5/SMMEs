@@ -1,0 +1,34 @@
+{
+    "name":  "sme-agent-platform-firebase-bootstrap",
+    "private":  true,
+    "type":  "module",
+    "scripts":  {
+                    "bootstrap":  "node scripts/bootstrap-firestore.mjs",
+                    "p02:registry":  "node scripts/p02-create-registry.mjs",
+                    "p02:verify":  "node scripts/p02-verify-registry.mjs",
+                    "p03:contracts":  "node scripts/p03-create-contracts.mjs",
+                    "p03:validate-local":  "node scripts/p03-validate-contract-files.mjs",
+                    "p03:verify":  "node scripts/p03-verify-contracts.mjs",
+                    "deploy:firestore":  "firebase deploy --only firestore",
+                    "p04:validate":  "node scripts/p04-validate-architecture.mjs",
+                    "p05:core":  "node scripts/p05-run-core-integration.mjs",
+                    "p05:customer":  "node scripts/p05-run-customer-integration.mjs",
+                    "p05:validate":  "node scripts/p05-validate-integration.mjs",
+                    "p06:pricing":  "node scripts/p06-run-pricing-integration.mjs",
+                    "p06:validate":  "node scripts/p06-validate-pricing.mjs",
+                    "p07:system":  "node scripts/p07-run-system-integration.mjs",
+                    "p07:validate":  "node scripts/p07-validate-system-integration.mjs",
+                    "backend:validate":  "node scripts/backend-validate.mjs",
+                    "backend:preflight-live":  "node scripts/backend-live-preflight.mjs",
+                    "backend:deploy-gate":  "node scripts/backend-deploy-gate.mjs",
+                    "backend:register-v4":  "node scripts/backend-register-v4.mjs",
+                    "backend:finish-validate":  "node scripts/backend-finish-validate.mjs"
+                },
+    "dependencies":  {
+                         "dotenv":  "^16.4.5",
+                         "firebase-admin":  "^13.4.0"
+                     },
+    "devDependencies":  {
+                            "firebase-tools":  "^14.15.2"
+                        }
+}

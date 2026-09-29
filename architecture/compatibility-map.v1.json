@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "collectionAliases": {
+    "system_events": "agentEvents",
+    "agent_outputs": "agentOutputs",
+    "agent_state": "agentState",
+    "agent_runs": "agentRuns",
+    "agent_recommendations": "agentRecommendations",
+    "approval_log": "approvalLog",
+    "inventory_snapshots": "inventorySnapshots",
+    "inventory_movements": "inventoryMovements",
+    "supplier_quotes": "supplierQuotes",
+    "supplier_performance": "supplierPerformance",
+    "purchase_orders": "purchaseOrders",
+    "goods_receipts": "goodsReceipts",
+    "customer_interactions": "customerInteractions",
+    "competitor_prices": "competitorPrices",
+    "local_events": "localEvents"
+  },
+  "customerEngagement": {
+    "internalEventToBoundary": {
+      "customer.segment.updated": "customer.segment.updated.v1",
+      "customer.retention.risk.changed": "customer.retention-risk.changed.v1",
+      "customer.promotion.recommended": "customer.promotion.recommended.v1",
+      "customer.feedback.insight.created": "customer.feedback-insight.created.v1",
+      "customer.next_action.recommended": "customer.next-action.recommended.v1",
+      "sales.transaction.recorded": "sales.transaction.recorded.v1",
+      "inventory.stock.changed": "inventory.stock.changed.v1",
+      "pricing.product.changed": "pricing.product.changed.v1",
+      "customer.profile.changed": "customer.profile.changed.v1",
+      "customer.feedback.created": "customer.feedback.created.v1"
+    },
+    "legacyWrites": {
+      "insights": "agentInsights",
+      "events": "agentEvents"
+    },
+    "priority2Target": "Publish canonical capability outputs to agentOutputs/agentState while retaining optional UI projection to agentInsights."
+  },
+  "inventoryToProcurement": {
+    "I1": {
+      "stock_on_hand": "on_hand",
+      "in_transit": "on_order",
+      "reserved": "allocated",
+      "available_stock": "available"
+    },
+    "I2": {
+      "inventory_position": "projected_position",
+      "suggested_reorder_qty": "recommended_qty"
+    },
+    "I3": {
+      "formula_version": "source_version"
+    },
+    "D4": {
+      "horizon": "horizon_days",
+      "source": "source_version"
+    }
+  },
+  "pricing": {
+    "currentBranch": "Standalone Flask/SQLite Price Agent AI; useful scraping/history/deal-analysis code is implementation input.",
+    "target": "Decompose behind P1-P5 adapters without making SQLite the shared production database."
+  }
+}

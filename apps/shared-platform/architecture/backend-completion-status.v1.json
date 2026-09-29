@@ -1,0 +1,19 @@
+{
+  "priority": "25-agent operations platform",
+  "currentStatus": "live-and-validated",
+  "completed": [
+    "canonical shared architecture",
+    "real Demand D1-D5 integration and tests",
+    "Inventory I1-I5 integration",
+    "Procurement R1-R5 integration",
+    "Pricing P1-P5 integration and safety controls",
+    "Customer C1-C5 runtime integration",
+    "cross-domain governance and approval flow",
+    "full 25-capability regression",
+    "live Firebase backend verification",
+    "real business data intake and editing",
+    "end-to-end process-data orchestration"
+  ],
+  "remainingBeforeProductionDeploy": [],
+  "deployPolicy": "operational"
+}

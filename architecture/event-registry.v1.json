@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "naming": "<domain>.<entity>.<verb>.v<major>",
+  "events": [
+    {
+      "eventType": "sales.transaction.recorded.v1",
+      "producer": "platform-ingestion",
+      "consumers": [
+        "D1",
+        "C1",
+        "C2"
+      ]
+    },
+    {
+      "eventType": "commercial.promotion.created.v1",
+      "producer": "platform-commercial",
+      "consumers": [
+        "D3",
+        "P4",
+        "C3"
+      ]
+    },
+    {
+      "eventType": "demand.forecast.updated.v1",
+      "producer": "D4",
+      "consumers": [
+        "I2",
+        "I3",
+        "P5",
+        "R4"
+      ]
+    },
+    {
+      "eventType": "inventory.stock.updated.v1",
+      "producer": "I1",
+      "consumers": [
+        "I2",
+        "I4",
+        "I5",
+        "P5",
+        "R4"
+      ]
+    },
+    {
+      "eventType": "procurement.supplier-performance.updated.v1",
+      "producer": "R2",
+      "consumers": [
+        "R3",
+        "R4"
+      ]
+    },
+    {
+      "eventType": "pricing.recommendation.created.v1",
+      "producer": "P5",
+      "consumers": [
+        "approval-queue"
+      ]
+    },
+    {
+      "eventType": "procurement.recommendation.created.v1",
+      "producer": "R4",
+      "consumers": [
+        "approval-queue"
+      ]
+    },
+    {
+      "eventType": "governance.recommendation.approved.v1",
+      "producer": "platform-governance",
+      "consumers": [
+        "ui",
+        "action-executor"
+      ]
+    },
+    {
+      "eventType": "governance.outcome.recorded.v1",
+      "producer": "platform-governance",
+      "consumers": [
+        "D5",
+        "domain-evaluator"
+      ]
+    },
+    {
+      "eventType": "customer.segment.updated.v1",
+      "producer": "C1",
+      "consumers": [
+        "C2",
+        "C3",
+        "C4"
+      ]
+    },
+    {
+      "eventType": "customer.retention-risk.changed.v1",
+      "producer": "C2",
+      "consumers": [
+        "C4"
+      ]
+    },
+    {
+      "eventType": "customer.promotion.recommended.v1",
+      "producer": "C3",
+      "consumers": [
+        "C4",
+        "approval-queue"
+      ]
+    },
+    {
+      "eventType": "customer.feedback-insight.created.v1",
+      "producer": "C5",
+      "consumers": [
+        "C4",
+        "management-dashboard"
+      ]
+    },
+    {
+      "eventType": "customer.next-action.recommended.v1",
+      "producer": "C4",
+      "consumers": [
+        "approval-queue"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "I1": {
+    "producerFields": [
+      "stock_on_hand",
+      "in_transit",
+      "reserved",
+      "available_stock"
+    ],
+    "procurementView": {
+      "on_hand": "stock_on_hand",
+      "on_order": "in_transit",
+      "allocated": "reserved",
+      "available": "available_stock"
+    }
+  },
+  "I2": {
+    "producerFields": [
+      "inventory_position",
+      "suggested_reorder_qty"
+    ],
+    "procurementView": {
+      "projected_position": "inventory_position",
+      "recommended_qty": "suggested_reorder_qty"
+    }
+  },
+  "I3": {
+    "producerFields": [
+      "safety_stock",
+      "service_level",
+      "lead_time_days",
+      "formula_version"
+    ],
+    "procurementView": {
+      "source_version": "formula_version"
+    }
+  },
+  "rule": "Inventory is producer authority; Procurement compatibility is implemented in an adapter/repository boundary, not by duplicating Inventory calculations."
+}

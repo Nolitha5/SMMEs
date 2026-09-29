@@ -1,0 +1,178 @@
+{
+  "generatedAt": "2026-09-29T09:01:19.368Z",
+  "scenario": "D4 -> I1/I3 -> I2 -> R4",
+  "passed": true,
+  "d4": {
+    "output_id": "D4-SKU-100-1790672479369-e8b3c1",
+    "agent_id": "D4",
+    "domain": "demand",
+    "output_type": "DemandForecast",
+    "entity_type": "product",
+    "entity_id": "SKU-100",
+    "payload": {
+      "product_id": "SKU-100",
+      "horizon_days": 7,
+      "expected_qty": 310,
+      "lower_bound": 270,
+      "upper_bound": 355,
+      "confidence": 0.86,
+      "drivers": [
+        "weekend uplift",
+        "local event"
+      ],
+      "generated_at": "2026-09-29T09:01:19.368Z",
+      "source_version": "demand-provisional-1.0"
+    },
+    "input_refs": [],
+    "confidence": 0.86,
+    "risk_level": "LOW",
+    "generated_at": "2026-09-29T09:01:19.368Z",
+    "expires_at": null,
+    "model_or_rule_version": "demand-provisional-1.0",
+    "run_id": "run-D4-SKU-100-1790672479369-e8b3c1",
+    "schema_version": "1.0",
+    "state_id": "D4:DemandForecast:SKU-100"
+  },
+  "i1": {
+    "output_id": "I1-SKU-100-1790672479369-0c2c4e",
+    "agent_id": "I1",
+    "domain": "inventory",
+    "output_type": "InventoryPosition",
+    "entity_type": "product",
+    "entity_id": "SKU-100",
+    "payload": {
+      "product_id": "SKU-100",
+      "on_hand": 95,
+      "on_order": 0,
+      "allocated": 10,
+      "available": 85,
+      "generated_at": "2026-09-29T09:01:19.368Z",
+      "source_version": "I1-v1"
+    },
+    "input_refs": [],
+    "confidence": 1,
+    "risk_level": "LOW",
+    "generated_at": "2026-09-29T09:01:19.368Z",
+    "expires_at": null,
+    "model_or_rule_version": "I1-v1",
+    "run_id": "run-I1-SKU-100-1790672479369-0c2c4e",
+    "schema_version": "1.0",
+    "state_id": "I1:InventoryPosition:SKU-100"
+  },
+  "i3": {
+    "output_id": "I3-SKU-100-1790672479370-7d8e27",
+    "agent_id": "I3",
+    "domain": "inventory",
+    "output_type": "SafetyStockTarget",
+    "entity_type": "product",
+    "entity_id": "SKU-100",
+    "payload": {
+      "product_id": "SKU-100",
+      "safety_stock": 35,
+      "service_level": 0.95,
+      "lead_time_days": 5,
+      "generated_at": "2026-09-29T09:01:19.368Z",
+      "source_version": "I3-v1"
+    },
+    "input_refs": [
+      "D4-SKU-100-1790672479369-e8b3c1",
+      "I1-SKU-100-1790672479369-0c2c4e"
+    ],
+    "confidence": 0.9,
+    "risk_level": "LOW",
+    "generated_at": "2026-09-29T09:01:19.368Z",
+    "expires_at": null,
+    "model_or_rule_version": "I3-v1",
+    "run_id": "run-I3-SKU-100-1790672479370-7d8e27",
+    "schema_version": "1.0",
+    "state_id": "I3:SafetyStockTarget:SKU-100"
+  },
+  "i2": {
+    "output_id": "I2-SKU-100-1790672479370-44ef08",
+    "agent_id": "I2",
+    "domain": "inventory",
+    "output_type": "ReorderNeed",
+    "entity_type": "product",
+    "entity_id": "SKU-100",
+    "payload": {
+      "product_id": "SKU-100",
+      "reorder_point": 256.4286,
+      "projected_position": 85,
+      "reorder_needed": true,
+      "recommended_qty": 171.43,
+      "generated_at": "2026-09-29T09:01:19.368Z",
+      "source_version": "I2-v1.0-basic-rop"
+    },
+    "input_refs": [
+      "D4-SKU-100-1790672479369-e8b3c1",
+      "I1-SKU-100-1790672479369-0c2c4e",
+      "I3-SKU-100-1790672479370-7d8e27"
+    ],
+    "confidence": 0.92,
+    "risk_level": "LOW",
+    "generated_at": "2026-09-29T09:01:19.368Z",
+    "expires_at": null,
+    "model_or_rule_version": "I2-v1.0-basic-rop",
+    "run_id": "run-I2-SKU-100-1790672479370-44ef08",
+    "schema_version": "1.0",
+    "state_id": "I2:ReorderNeed:SKU-100"
+  },
+  "r4": {
+    "output_id": "R4-SKU-100-1790672479370-f609af",
+    "agent_id": "R4",
+    "domain": "procurement",
+    "output_type": "PurchaseRecommendation",
+    "entity_type": "product",
+    "entity_id": "SKU-100",
+    "payload": {
+      "supplier_id": "SUP-A",
+      "product_id": "SKU-100",
+      "qty": 171.43,
+      "unit_cost": 18.5,
+      "expected_cost": 3171.46,
+      "eta_days": 7,
+      "supplier_score": 0.91,
+      "reliability_score": 0.87,
+      "lead_time_risk": "LOW",
+      "risk": "LOW",
+      "currency": "ZAR",
+      "decision_score": 0.9115,
+      "alternatives": [
+        {
+          "supplier_id": "SUP-B",
+          "qty": 250,
+          "expected_cost": 4450,
+          "decision_score": 0.8315,
+          "lead_time_risk": "MEDIUM",
+          "reliability_score": 0.95
+        }
+      ]
+    },
+    "input_refs": [
+      "I2-SKU-100-1790672479370-44ef08",
+      "I3-SKU-100-1790672479370-7d8e27",
+      "D4-SKU-100-1790672479369-e8b3c1",
+      "R1:SupplierComparison:SKU-100",
+      "R2:SupplierReliabilityScore:SUP-A",
+      "R3:LeadTimeRisk:SUP-A"
+    ],
+    "confidence": 0.938,
+    "risk_level": "LOW",
+    "generated_at": "2026-09-29T09:01:19.368Z",
+    "expires_at": null,
+    "model_or_rule_version": "1.0.0-r4",
+    "run_id": "run-R4-SKU-100-1790672479370-f609af",
+    "schema_version": "1.0",
+    "state_id": "R4:PurchaseRecommendation:SKU-100"
+  },
+  "summary": {
+    "safetyStock": 35,
+    "reorderPoint": 256.43,
+    "projectedPosition": 85,
+    "recommendedQty": 171.43,
+    "selectedSupplier": "SUP-A",
+    "expectedCost": 3171.46,
+    "r4Risk": "LOW",
+    "requiresHumanApproval": true
+  }
+}

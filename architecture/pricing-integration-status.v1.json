@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "sourceBranch": "TIYANI-MANGANYI",
+  "canonicalDomain": "pricing",
+  "capabilities": {
+    "P1": {
+      "name": "Competitor Price Monitor",
+      "status": "partial-source-present",
+      "currentEvidence": [
+        "scrape_price",
+        "store_prices",
+        "price_history"
+      ],
+      "integrationDecision": "Adapter can be built from observed/store price records."
+    },
+    "P2": {
+      "name": "Margin Guard Agent",
+      "status": "missing",
+      "currentEvidence": [],
+      "integrationDecision": "Do not infer margin guardrails from target-price logic. Requires explicit unit-cost/margin-floor rules."
+    },
+    "P3": {
+      "name": "Demand Elasticity Estimator",
+      "status": "missing",
+      "currentEvidence": [
+        "linear price trend exists, but price trend is not demand elasticity"
+      ],
+      "integrationDecision": "Do not relabel existing trend regression as elasticity."
+    },
+    "P4": {
+      "name": "Markdown & Promotion Pricing Agent",
+      "status": "missing",
+      "currentEvidence": [],
+      "integrationDecision": "Requires I4 + D4 + P2 + promotion constraints."
+    },
+    "P5": {
+      "name": "Price Recommendation & Fairness Gate",
+      "status": "partial-blocked",
+      "currentEvidence": [
+        "PriceAgent.analyze returns WATCH/BUY/WAIT style deal advice"
+      ],
+      "missingGuards": [
+        "D4 demand context",
+        "I1/I4 inventory context",
+        "P2 margin floor",
+        "P3 elasticity",
+        "P4 promo candidate",
+        "fairness policy"
+      ],
+      "integrationDecision": "Current deal advice may be retained as evidence/context only; it must not become canonical executable PriceRecommendation until the missing guards exist."
+    }
+  }
+}

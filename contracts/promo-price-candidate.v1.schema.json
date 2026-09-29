@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"promo-price-candidate-v1",
+  "title":"PromoPriceCandidate",
+  "type":"object",
+  "required":["product_id","current_price","candidate_price","discount_pct","actionable","reason","source_version"],
+  "properties":{
+    "product_id":{"type":"string"},
+    "current_price":{"type":"number","minimum":0},
+    "candidate_price":{"type":"number","minimum":0},
+    "discount_pct":{"type":"number","minimum":0,"maximum":1},
+    "actionable":{"type":"boolean"},
+    "reason":{"type":"string"},
+    "source_version":{"type":"string"}
+  }
+}

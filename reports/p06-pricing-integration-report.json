@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-09-29T00:00:00.000Z",
+  "passed": true,
+  "sourceBranch": "TIYANI-MANGANYI",
+  "completeEvidenceScenario": {
+    "p1": {
+      "status": "OK",
+      "product_id": "SKU-PRICE-100",
+      "observations": [
+        {
+          "store_name": "Store A",
+          "price": 30.49,
+          "observed_at": "2026-09-28T18:00:00Z",
+          "source": "Tiyani-store-observation"
+        },
+        {
+          "store_name": "Store B",
+          "price": 29.79,
+          "observed_at": "2026-09-28T19:00:00Z",
+          "source": "Tiyani-store-observation"
+        },
+        {
+          "store_name": "Store C",
+          "price": 31.2,
+          "observed_at": "2026-09-28T20:00:00Z",
+          "source": "Tiyani-store-observation"
+        }
+      ],
+      "market_min": 29.79,
+      "market_max": 31.2,
+      "market_average": 30.49,
+      "market_position_pct": -1.65,
+      "observed_at": "2026-09-29T00:00:00.000Z",
+      "source_version": "P1-v1",
+      "confidence": 0.79
+    },
+    "p2": {
+      "status": "OK",
+      "product_id": "SKU-PRICE-100",
+      "effective_unit_cost": 19,
+      "margin_floor_pct": 0.25,
+      "minimum_price": 25.33,
+      "currency": "ZAR",
+      "source_version": "P2-v1",
+      "confidence": 1
+    },
+    "p3": {
+      "product_id": "SKU-PRICE-100",
+      "status": "ESTIMATED",
+      "elasticity": -2.7022,
+      "r_squared": 0.9941,
+      "observation_count": 8,
+      "distinct_price_count": 8,
+      "confidence": 0.8379,
+      "source_version": "P3-v1"
+    },
+    "p4": {
+      "product_id": "SKU-PRICE-100",
+      "current_price": 29.99,
+      "candidate_price": 26.99,
+      "discount_pct": 0.1,
+      "actionable": true,
+      "reason": "EXCESS_STOCK/HIGH supports a bounded markdown without crossing the margin floor.",
+      "source_version": "P4-v1",
+      "confidence": 0.9
+    },
+    "p5": {
+      "product_id": "SKU-PRICE-100",
+      "current_price": 29.99,
+      "proposed_price": 26.99,
+      "change_pct": -0.1,
+      "margin_after_pct": 0.296,
+      "market_average": 30.49,
+      "elasticity": -2.7022,
+      "inventory_context": {
+        "available_stock": 85,
+        "stock_risk": "EXCESS_STOCK"
+      },
+      "demand_context": {
+        "expected_qty": 28,
+        "horizon_days": 7
+      },
+      "fairness_checks": [
+        "bounded_single_change",
+        "margin_floor_respected",
+        "no_event_surge",
+        "no_customer_specific_pricing",
+        "human_approval_required"
+      ],
+      "actionable": true,
+      "status": "READY_FOR_REVIEW",
+      "risk_level": "HIGH",
+      "reason": "Canonical pricing evidence supports a bounded price change; human approval is required.",
+      "source_version": "P5-v1",
+      "confidence": 0.79
+    }
+  },
+  "failSafeScenario": {
+    "p3": {
+      "product_id": "SKU-PRICE-100",
+      "status": "INSUFFICIENT_DATA",
+      "elasticity": null,
+      "r_squared": null,
+      "observation_count": 1,
+      "distinct_price_count": 1,
+      "confidence": 0.15,
+      "source_version": "P3-v1"
+    },
+    "p5": {
+      "product_id": "SKU-PRICE-100",
+      "current_price": 29.99,
+      "proposed_price": 29.99,
+      "margin_after_pct": null,
+      "fairness_checks": [
+        "insufficient_evidence"
+      ],
+      "actionable": false,
+      "status": "DRAFT",
+      "missing_dependencies": [
+        "P3"
+      ],
+      "reason": "Missing reliable pricing evidence: P3.",
+      "source_version": "P5-v1",
+      "confidence": 0
+    }
+  }
+}

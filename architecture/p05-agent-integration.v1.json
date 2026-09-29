@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "priority": 2,
+  "status": "local-integration-harness",
+  "firebaseWrites": false,
+  "coreScenario": {
+    "chain": [
+      "D4",
+      "I1",
+      "I3",
+      "I2",
+      "R4"
+    ],
+    "supportingProcurementEvidence": [
+      "R1",
+      "R2",
+      "R3"
+    ],
+    "notes": [
+      "D4 is provisional until Florah source is available.",
+      "I3 and I2 calculations mirror the current Thobeka source formulas.",
+      "R4 selection mirrors the current Noosrat source formula and 25000 ZAR second-review threshold.",
+      "R1-R3 are supplied as typed evidence fixtures in this local scenario; their independent algorithms are not reimplemented here."
+    ]
+  },
+  "customerScenario": {
+    "runtime": "actual compiled @cea/shared C1-C5 package",
+    "legacyProjection": [
+      "agentInsights",
+      "agentEvents"
+    ],
+    "canonicalProjection": [
+      "agentOutputs",
+      "agentState",
+      "agentRecommendations"
+    ],
+    "actionRule": "C4 CustomerAction becomes a canonical human-review recommendation; C3 stays an action-candidate feeding C4."
+  },
+  "pricingScenario": {
+    "status": "guarded-partial",
+    "reason": "Current Tiyani branch is a standalone Price Agent; P1-P5 decomposition is incomplete and P5 must not publish executable pricing recommendations yet."
+  }
+}

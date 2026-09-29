@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"allowed-price-range-v1",
+  "title":"AllowedPriceRange",
+  "type":"object",
+  "required":["product_id","effective_unit_cost","margin_floor_pct","minimum_price","currency","source_version"],
+  "properties":{
+    "product_id":{"type":"string"},
+    "effective_unit_cost":{"type":"number","minimum":0},
+    "margin_floor_pct":{"type":"number","minimum":0,"exclusiveMaximum":1},
+    "minimum_price":{"type":"number","minimum":0},
+    "currency":{"type":"string"},
+    "source_version":{"type":"string"}
+  }
+}

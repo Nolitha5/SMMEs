@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "domain": "demand",
+  "branch": "Florah",
+  "sourceCommit": "e3534ef9ebc94460328a07bd45bedcec03cee956",
+  "status": "integrated-live-source-tested",
+  "capabilities": {
+    "D1": { "expectedOutput": "CleanDemandSeries", "status": "integrated-tested" },
+    "D2": { "expectedOutput": "SeasonalityProfile", "status": "integrated-tested" },
+    "D3": { "expectedOutput": "DemandSignalAdjustment", "status": "integrated-tested" },
+    "D4": { "expectedOutput": "DemandForecast", "status": "integrated-tested-with-canonical-adapter" },
+    "D5": { "expectedOutput": "ForecastQualityAlert", "status": "integrated-tested" }
+  },
+  "canonicalD4": {
+    "nativeHorizonField": "horizon",
+    "canonicalHorizonField": "horizon_days",
+    "sourceVersion": "florah-demand-e3534ef",
+    "downstreamConsumers": ["I2", "I3", "P5", "R4"]
+  },
+  "deploymentAllowed": true,
+  "testEvidence": {
+    "florahPytest": "91 passed",
+    "realD4ExpectedQty": 415.1,
+    "realD4HorizonDays": 7,
+    "canonicalAdapter": "pass",
+    "inventory": "pass",
+    "procurement": "pass",
+    "pricing": "pass",
+    "customerEngagement": "pass",
+    "governance": "pass"
+  },
+  "notes": [
+    "Real D1-D5 source is vendored from Florah commit e3534ef9ebc94460328a07bd45bedcec03cee956.",
+    "Florah's internal forecasting algorithms remain unchanged.",
+    "The D4 boundary maps native horizon to canonical horizon_days and adds source_version.",
+    "The full local 25-capability system regression passed before this live deployment gate was opened.",
+    "Florah's standalone Firebase project/config is not used by the shared platform."
+  ]
+}

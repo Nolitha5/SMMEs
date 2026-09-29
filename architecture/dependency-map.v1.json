@@ -1,0 +1,211 @@
+{
+  "registryVersion": 1,
+  "rule": "Consumers read published contracts/state. No cross-domain imports of internal implementation classes.",
+  "edges": [
+    {
+      "producer": "D1",
+      "consumer": "D2",
+      "contract": "CleanDemandSeries"
+    },
+    {
+      "producer": "D1",
+      "consumer": "D3",
+      "contract": "CleanDemandSeries"
+    },
+    {
+      "producer": "D1",
+      "consumer": "D4",
+      "contract": "CleanDemandSeries"
+    },
+    {
+      "producer": "D2",
+      "consumer": "D4",
+      "contract": "SeasonalityProfile"
+    },
+    {
+      "producer": "D3",
+      "consumer": "D4",
+      "contract": "DemandSignalAdjustment"
+    },
+    {
+      "producer": "D4",
+      "consumer": "D5",
+      "contract": "DemandForecast"
+    },
+    {
+      "producer": "D4",
+      "consumer": "I2",
+      "contract": "DemandForecast"
+    },
+    {
+      "producer": "D4",
+      "consumer": "I3",
+      "contract": "DemandForecast"
+    },
+    {
+      "producer": "D4",
+      "consumer": "P5",
+      "contract": "DemandForecast"
+    },
+    {
+      "producer": "D4",
+      "consumer": "R4",
+      "contract": "DemandForecast"
+    },
+    {
+      "producer": "I1",
+      "consumer": "I2",
+      "contract": "InventoryPosition"
+    },
+    {
+      "producer": "I1",
+      "consumer": "I4",
+      "contract": "InventoryPosition"
+    },
+    {
+      "producer": "I1",
+      "consumer": "I5",
+      "contract": "InventoryPosition"
+    },
+    {
+      "producer": "I1",
+      "consumer": "P5",
+      "contract": "InventoryPosition"
+    },
+    {
+      "producer": "I1",
+      "consumer": "R4",
+      "contract": "InventoryPosition"
+    },
+    {
+      "producer": "I3",
+      "consumer": "I2",
+      "contract": "SafetyStockTarget"
+    },
+    {
+      "producer": "I2",
+      "consumer": "R4",
+      "contract": "ReorderNeed"
+    },
+    {
+      "producer": "I4",
+      "consumer": "P4",
+      "contract": "StockRiskAlert"
+    },
+    {
+      "producer": "I4",
+      "consumer": "P5",
+      "contract": "StockRiskAlert"
+    },
+    {
+      "producer": "I4",
+      "consumer": "C3",
+      "contract": "StockRiskAlert"
+    },
+    {
+      "producer": "P1",
+      "consumer": "P5",
+      "contract": "CompetitorPriceSignal"
+    },
+    {
+      "producer": "P2",
+      "consumer": "P4",
+      "contract": "AllowedPriceRange"
+    },
+    {
+      "producer": "P2",
+      "consumer": "P5",
+      "contract": "AllowedPriceRange"
+    },
+    {
+      "producer": "P2",
+      "consumer": "C3",
+      "contract": "AllowedPriceRange"
+    },
+    {
+      "producer": "P3",
+      "consumer": "P5",
+      "contract": "ElasticityEstimate"
+    },
+    {
+      "producer": "P4",
+      "consumer": "P5",
+      "contract": "PromoPriceCandidate"
+    },
+    {
+      "producer": "R1",
+      "consumer": "R4",
+      "contract": "SupplierComparison"
+    },
+    {
+      "producer": "R2",
+      "consumer": "R3",
+      "contract": "SupplierReliabilityScore"
+    },
+    {
+      "producer": "R2",
+      "consumer": "R4",
+      "contract": "SupplierReliabilityScore"
+    },
+    {
+      "producer": "R3",
+      "consumer": "I3",
+      "contract": "LeadTimeRisk"
+    },
+    {
+      "producer": "R3",
+      "consumer": "R4",
+      "contract": "LeadTimeRisk"
+    },
+    {
+      "producer": "R4",
+      "consumer": "I1",
+      "contract": "ApprovedPurchasePlan"
+    },
+    {
+      "producer": "R5",
+      "consumer": "R2",
+      "contract": "ProcurementOutcome"
+    },
+    {
+      "producer": "R5",
+      "consumer": "R3",
+      "contract": "ProcurementOutcome"
+    },
+    {
+      "producer": "R5",
+      "consumer": "I5",
+      "contract": "ProcurementException"
+    },
+    {
+      "producer": "C1",
+      "consumer": "C2",
+      "contract": "CustomerSegment"
+    },
+    {
+      "producer": "C1",
+      "consumer": "C3",
+      "contract": "CustomerSegment"
+    },
+    {
+      "producer": "C1",
+      "consumer": "C4",
+      "contract": "CustomerSegment"
+    },
+    {
+      "producer": "C2",
+      "consumer": "C4",
+      "contract": "RetentionRisk"
+    },
+    {
+      "producer": "C3",
+      "consumer": "C4",
+      "contract": "PromotionRecommendation"
+    },
+    {
+      "producer": "C5",
+      "consumer": "C4",
+      "contract": "FeedbackInsight"
+    }
+  ]
+}

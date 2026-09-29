@@ -1,0 +1,1 @@
+invoice_id,invoice_number,po_id,supplier_id,product_id,qty_invoiced,unit_cost,tax_amount,currency,invoiced_at

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/approval-log.v1.schema.json",
+  "title": "ApprovalLogV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "approvalId",
+    "businessId",
+    "recommendationId",
+    "reviewer",
+    "decision",
+    "decidedAt",
+    "correlationId",
+    "contractVersion",
+    "schemaVersion"
+  ],
+  "properties": {
+    "approvalId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "recommendationId": {
+      "type": "string"
+    },
+    "reviewer": {
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "APPROVED",
+        "MODIFIED",
+        "REJECTED"
+      ]
+    },
+    "modifiedAction": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decidedAt": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 4
+    }
+  }
+}

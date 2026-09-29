@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"elasticity-estimate-v1",
+  "title":"ElasticityEstimate",
+  "type":"object",
+  "required":["product_id","status","observation_count","distinct_price_count","confidence","source_version"],
+  "properties":{
+    "product_id":{"type":"string"},
+    "status":{"type":"string","enum":["ESTIMATED","INSUFFICIENT_DATA","UNRELIABLE"]},
+    "elasticity":{"type":["number","null"]},
+    "r_squared":{"type":["number","null"]},
+    "observation_count":{"type":"integer","minimum":0},
+    "distinct_price_count":{"type":"integer","minimum":0},
+    "confidence":{"type":"number","minimum":0,"maximum":1},
+    "source_version":{"type":"string"}
+  }
+}

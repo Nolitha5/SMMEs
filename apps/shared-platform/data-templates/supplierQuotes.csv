@@ -1,0 +1,1 @@
+quote_id,supplier_id,product_id,unit_cost,moq,quoted_lead_time_days,available_qty,payment_terms_days,currency,valid_from,valid_until,observed_at

@@ -1,0 +1,39 @@
+{
+  "agentId": "customer-engagement",
+  "displayName": "Customer Engagement Agent",
+  "contractVersion": "1.0.0",
+  "architecture": "one-agent-five-internal-capabilities",
+  "finalInterface": "provided-by-shared-platform",
+  "database": "shared-firebase-firestore",
+  "capabilities": [
+    { "id": "C1", "name": "Customer Segmentation" },
+    { "id": "C2", "name": "Retention Risk" },
+    { "id": "C3", "name": "Promotion Recommender" },
+    { "id": "C4", "name": "Next-Best-Action" },
+    { "id": "C5", "name": "Feedback & Sentiment" }
+  ],
+  "reads": [
+    "customers",
+    "transactions",
+    "products.stock",
+    "products.price",
+    "products.marginPct",
+    "feedback"
+  ],
+  "writes": ["insights", "events"],
+  "doesNotOwn": ["authentication", "final-ui", "sales-transactions", "inventory-quantity", "authoritative-pricing"],
+  "publishesEvents": [
+    "customer.segment.updated",
+    "customer.retention.risk.changed",
+    "customer.promotion.recommended",
+    "customer.feedback.insight.created",
+    "customer.next_action.recommended"
+  ],
+  "provisionalConsumesEvents": [
+    "sales.transaction.recorded",
+    "inventory.stock.changed",
+    "pricing.product.changed",
+    "customer.profile.changed",
+    "customer.feedback.created"
+  ]
+}

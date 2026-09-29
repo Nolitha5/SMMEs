@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "sourceBranch": "TIYANI-MANGANYI",
+  "canonicalDomain": "pricing",
+  "status": "integration-baseline-complete",
+  "sourcePreservation": {
+    "preservedFromTiyani": [
+      "multi-store observed-price concept",
+      "price-history trend/deal analysis as non-authoritative context",
+      "target-price/watch behavior as context only"
+    ],
+    "addedBySharedPlatform": [
+      "P2 explicit margin floor contract",
+      "P3 quantity-vs-price elasticity contract",
+      "P4 stock-risk markdown contract",
+      "P5 fairness and approval gate"
+    ]
+  },
+  "capabilities": {
+    "P1": {"name":"Competitor Price Monitor","status":"integrated","output":"CompetitorPriceSignal"},
+    "P2": {"name":"Margin Guard Agent","status":"integration-baseline","output":"AllowedPriceRange"},
+    "P3": {"name":"Demand Elasticity Estimator","status":"integration-baseline","output":"ElasticityEstimate"},
+    "P4": {"name":"Markdown & Promotion Pricing Agent","status":"integration-baseline","output":"PromoPriceCandidate"},
+    "P5": {"name":"Price Recommendation & Fairness Gate","status":"integration-baseline","output":"PriceRecommendation","approvalRequired":true}
+  },
+  "important": "P2-P5 baseline logic is shared-platform integration logic derived from the agreed blueprint requirements. It is not represented as pre-existing code from Tiyani's standalone Flask app."
+}

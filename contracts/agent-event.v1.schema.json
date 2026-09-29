@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/agent-event.v1.schema.json",
+  "title": "AgentEventV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventId","businessId","eventType","sourceAgent","payload","contractVersion","schemaVersion","correlationId","idempotencyKey","status","attemptCount","createdAt"],
+  "properties": {
+    "eventId": {"type":"string","minLength":1},
+    "businessId": {"type":"string","minLength":1},
+    "eventType": {"type":"string","pattern":"^[a-z0-9-]+\\.[a-z0-9-]+\\.[a-z0-9-]+\\.v[1-9][0-9]*$"},
+    "sourceAgent": {"type":"string","pattern":"^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "sourceCapability": {"type":["string","null"]},
+    "entityType": {"type":["string","null"]},
+    "entityId": {"type":["string","null"]},
+    "payload": {"type":"object"},
+    "contractVersion": {"const":1},
+    "schemaVersion": {"type":"integer","minimum":1},
+    "correlationId": {"type":"string","minLength":1},
+    "causationId": {"type":["string","null"]},
+    "idempotencyKey": {"type":"string","minLength":1},
+    "status": {"enum":["pending","processing","processed","failed","dead-letter"]},
+    "attemptCount": {"type":"integer","minimum":0},
+    "createdAt": {"type":["string","object"]},
+    "processedAt": {"type":["string","object","null"]},
+    "lastError": {"type":["string","null"]}
+  }
+}

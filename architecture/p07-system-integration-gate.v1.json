@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "priority": 2,
+  "status": "local-system-integration-gate",
+  "firebaseWrites": false,
+  "purpose": "Prove the currently available domains cooperate through canonical contracts, governance and approved state transitions before Firestore deployment.",
+  "validatedDomains": [
+    "inventory",
+    "procurement",
+    "pricing",
+    "customer-engagement"
+  ],
+  "demand": {
+    "status": "provisional-boundary",
+    "producer": "D4 fixture/adapter",
+    "replacement": "Florah real D1-D5 when source becomes available",
+    "downstreamMustNotChange": true
+  },
+  "gates": [
+    "P04 canonical architecture",
+    "P05 D4 -> Inventory -> Procurement",
+    "P05 actual Customer Engagement C1-C5 runtime",
+    "P06 Pricing P1-P5 + fairness/fail-safe",
+    "P07 pricing approval -> shared product projection -> Customer Engagement",
+    "No action mutates shared commercial state before approval"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/agent-run.v1.schema.json",
+  "title": "AgentRunV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runId",
+    "businessId",
+    "capabilityId",
+    "sourceAgent",
+    "domain",
+    "entityType",
+    "entityId",
+    "startedAt",
+    "status",
+    "modelOrRuleVersion",
+    "inputRefs",
+    "contractVersion",
+    "schemaVersion",
+    "correlationId"
+  ],
+  "properties": {
+    "runId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "businessId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^[DIPRC][1-5]$"
+    },
+    "sourceAgent": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "startedAt": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "completedAt": {
+      "type": [
+        "string",
+        "object",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "RUNNING",
+        "SUCCEEDED",
+        "FAILED"
+      ]
+    },
+    "durationMs": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "modelOrRuleVersion": {
+      "type": "string"
+    },
+    "inputRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outputId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 4
+    },
+    "correlationId": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

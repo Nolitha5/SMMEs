@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "contracts": [
+    {"agent":"P1","outputType":"CompetitorPriceSignal","consumers":["P5"]},
+    {"agent":"P2","outputType":"AllowedPriceRange","consumers":["P4","P5","C3"]},
+    {"agent":"P3","outputType":"ElasticityEstimate","consumers":["P5"]},
+    {"agent":"P4","outputType":"PromoPriceCandidate","consumers":["P5","C3-after-approval"]},
+    {"agent":"P5","outputType":"PriceRecommendation","consumers":["approval-queue"]}
+  ],
+  "upstream": {
+    "P4": ["I4:StockRiskAlert","D4:DemandForecast","P2:AllowedPriceRange"],
+    "P5": ["D4:DemandForecast","I1:InventoryPosition","I4:StockRiskAlert","P1:CompetitorPriceSignal","P2:AllowedPriceRange","P3:ElasticityEstimate","P4:PromoPriceCandidate"]
+  }
+}

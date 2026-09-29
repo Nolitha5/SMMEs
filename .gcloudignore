@@ -1,0 +1,30 @@
+# Source-control and local tooling
+.git/
+.gitignore
+.gcloudignore
+.patch-backups/
+
+# Local dependencies/build output
+**/node_modules/
+apps/shared-platform/dist/
+**/.venv*/
+**/__pycache__/
+**/*.pyc
+
+# Local/private configuration: never upload credentials or developer env files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+**/*firebase-adminsdk*.json
+**/*service-account*.json
+**/firebase-keys/
+
+# Local databases, logs and archives
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/*.log
+**/*.zip

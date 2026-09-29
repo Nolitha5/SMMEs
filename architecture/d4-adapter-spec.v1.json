@@ -1,0 +1,26 @@
+{
+  "canonicalOutput": "DemandForecast",
+  "producer": "D4",
+  "canonicalFields": [
+    "product_id",
+    "horizon_days",
+    "expected_qty",
+    "lower_bound",
+    "upper_bound",
+    "confidence",
+    "drivers",
+    "generated_at",
+    "source_version"
+  ],
+  "acceptedAliases": {
+    "horizon": "horizon_days",
+    "source": "source_version"
+  },
+  "consumers": [
+    "I2",
+    "I3",
+    "P5",
+    "R4"
+  ],
+  "rule": "Florah implementation remains internal. Adapt native D4 output at the boundary; do not modify downstream agents to depend on Florah internals."
+}

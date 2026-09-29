@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "product_id": "P001",
+  "reference_date": "2026-08-27",
+  "d1": {
+    "observations": 180,
+    "clean_observations": 178,
+    "outliers_detected": 2,
+    "missing_dates": 0
+  },
+  "d2": {
+    "seasonality_strength": 0.2452,
+    "confidence": 0.6226,
+    "data_sufficient": true
+  },
+  "d3": {
+    "signal_count": 6
+  },
+  "d4": {
+    "product_id": "P001",
+    "horizon_days": 7,
+    "expected_qty": 415.1,
+    "lower_bound": 347.83,
+    "upper_bound": 482.35,
+    "confidence": 0.7845,
+    "drivers": [
+      "Weekend uplift",
+      "Monthly variation",
+      "Weekly pattern"
+    ],
+    "generated_at": "2026-09-29T08:38:18.450207",
+    "source_version": "florah-demand-e3534ef"
+  },
+  "d5": {
+    "status": "ForecastStatus.INSUFFICIENT_EVIDENCE",
+    "actuals_count": 0,
+    "alert_count": 1
+  },
+  "shared_output": {
+    "outputId": "D4-DemandForecast-P001-real-demand-test",
+    "businessId": "dev-business",
+    "capabilityId": "D4",
+    "sourceAgent": "demand",
+    "domain": "demand",
+    "outputType": "DemandForecast",
+    "entityType": "product",
+    "entityId": "P001",
+    "payload": {
+      "product_id": "P001",
+      "horizon_days": 7,
+      "expected_qty": 415.1,
+      "lower_bound": 347.83,
+      "upper_bound": 482.35,
+      "confidence": 0.7845,
+      "drivers": [
+        "Weekend uplift",
+        "Monthly variation",
+        "Weekly pattern"
+      ],
+      "generated_at": "2026-09-29T08:38:18.450207",
+      "source_version": "florah-demand-e3534ef"
+    },
+    "inputRefs": [
+      "D1:CleanDemandSeries",
+      "D2:SeasonalityProfile",
+      "D3:DemandSignalAdjustment"
+    ],
+    "confidence": 0.7845,
+    "riskLevel": "LOW",
+    "generatedAt": "2026-09-29T08:38:18.450207",
+    "expiresAt": null,
+    "modelOrRuleVersion": "florah-demand-e3534ef",
+    "runId": "real-demand-test",
+    "correlationId": "real-demand-test",
+    "idempotencyKey": "D4:P001:2026-09-29T08:38:18.450207"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/shared-agent-output.v1.schema.json",
+  "title": "SharedAgentOutputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outputId",
+    "businessId",
+    "capabilityId",
+    "sourceAgent",
+    "domain",
+    "outputType",
+    "entityType",
+    "entityId",
+    "payload",
+    "inputRefs",
+    "confidence",
+    "riskLevel",
+    "generatedAt",
+    "modelOrRuleVersion",
+    "runId",
+    "contractVersion",
+    "schemaVersion",
+    "stateId",
+    "correlationId",
+    "idempotencyKey"
+  ],
+  "properties": {
+    "outputId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "businessId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^[DIPRC][1-5]$"
+    },
+    "sourceAgent": {
+      "type": "string",
+      "enum": [
+        "demand",
+        "inventory",
+        "pricing",
+        "procurement",
+        "customer-engagement"
+      ]
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "demand",
+        "inventory",
+        "pricing",
+        "procurement",
+        "customer-engagement"
+      ]
+    },
+    "outputType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entityType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entityId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload": {
+      "type": "object"
+    },
+    "inputRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "riskLevel": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ]
+    },
+    "generatedAt": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "object",
+        "null"
+      ]
+    },
+    "modelOrRuleVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 4
+    },
+    "stateId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "correlationId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

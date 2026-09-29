@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "currency": "ZAR",
+  "competitorObservationMaxAgeHours": 72,
+  "minimumElasticityObservations": 6,
+  "minimumDistinctElasticityPrices": 3,
+  "maximumSinglePriceChangePct": 0.15,
+  "maximumMarkdownPct": 0.20,
+  "eventBasedPriceIncreaseAllowed": false,
+  "customerSpecificPricingAllowed": false,
+  "humanApprovalRequiredForPriceRecommendation": true,
+  "failSafe": "Missing or unreliable P2/P3/P4 evidence produces a DRAFT/non-actionable P5 result."
+}

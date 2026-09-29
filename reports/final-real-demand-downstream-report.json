@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "firebaseWrites": false,
+  "demandSource": "florah-demand-e3534ef",
+  "realD4": {
+    "product_id": "P001",
+    "horizon_days": 7,
+    "expected_qty": 415.1,
+    "lower_bound": 347.83,
+    "upper_bound": 482.35,
+    "confidence": 0.7845,
+    "drivers": [
+      "Weekend uplift",
+      "Monthly variation",
+      "Weekly pattern"
+    ],
+    "generated_at": "2026-09-29T08:38:18.450207",
+    "source_version": "florah-demand-e3534ef"
+  },
+  "inventory": {
+    "safetyStock": 56,
+    "reorderPoint": 352.5,
+    "inventoryPosition": 103,
+    "recommendedQty": 249.5
+  },
+  "procurement": {
+    "supplier": "SUP-A",
+    "qty": 249.5,
+    "expectedCost": 1110.28,
+    "decisionScore": 0.9077
+  },
+  "pricing": {
+    "p1": "OK",
+    "p2Minimum": 4.94,
+    "p3Elasticity": -5,
+    "p4Candidate": 7.2,
+    "p5Status": "READY_FOR_REVIEW",
+    "p5Price": 7.2
+  }
+}

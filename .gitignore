@@ -1,0 +1,36 @@
+node_modules/
+.env
+serviceAccountKey.json
+*service-account*.json
+firebase-debug.log
+firebase-debug.*.log
+# Local secrets and credentials
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+*.key
+*firebase-adminsdk*.json
+firebase-keys/
+# Dependencies and build output
+dist/
+build/
+coverage/
+.venv*/
+__pycache__/
+.pytest_cache/
+*.pyc
+# Local operational state
+.patch-backups/
+.firebase/
+.gcloud/
+*.db
+*.sqlite
+*.sqlite3
+*.log
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

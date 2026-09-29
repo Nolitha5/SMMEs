@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/outcome.v1.schema.json",
+  "title": "ObservedOutcomeV1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "outcomeId",
+    "businessId",
+    "domain",
+    "subjectType",
+    "subjectId",
+    "data",
+    "recordedAt",
+    "contractVersion",
+    "schemaVersion",
+    "correlationId"
+  ],
+  "properties": {
+    "outcomeId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "recommendationId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceOutputId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "subjectType": {
+      "type": "string"
+    },
+    "subjectId": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object"
+    },
+    "recordedAt": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 4
+    },
+    "correlationId": {
+      "type": "string"
+    }
+  }
+}

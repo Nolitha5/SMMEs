@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "priority": "Test + deploy",
+  "currentStatus": "live-schema-v4-validated",
+  "completed": [
+    "canonical shared architecture",
+    "real Florah D1-D5 integration and tests",
+    "inventory, procurement, pricing and customer integrations",
+    "cross-domain governance and approval flow",
+    "full 25-capability regression",
+    "Firestore rules and indexes deployed",
+    "schema v4 metadata registered",
+    "final live Firebase verification",
+    "shared application Firebase connection",
+    "Firebase web authentication configuration"
+  ],
+  "remainingBeforeProductionDeploy": [],
+  "deployPolicy": "live-backend-and-shared-ui-validated"
+}

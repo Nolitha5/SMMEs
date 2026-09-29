@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-09-29T00:00:00.000Z",
+  "passed": true,
+  "actualCoreExecuted": true,
+  "customerCount": 6,
+  "canonicalOutputCount": 30,
+  "canonicalStateCount": 30,
+  "legacyInsightProjectionCount": 30,
+  "versionedEventCount": 30,
+  "recommendationCount": 6,
+  "sample": {
+    "output": {
+      "output_id": "C1-cus-thandi-p05",
+      "agent_id": "C1",
+      "domain": "customer-engagement",
+      "output_type": "CustomerSegment",
+      "entity_type": "customer",
+      "entity_id": "cus-thandi",
+      "payload": {
+        "agentId": "C1",
+        "customerId": "cus-thandi",
+        "segment": "regular",
+        "score": 65,
+        "reasons": [
+          "Stable purchasing pattern without extreme recency/frequency signals."
+        ],
+        "metrics": {
+          "recencyDays": 3,
+          "frequency90d": 4,
+          "spend90d": 475.99
+        }
+      },
+      "input_refs": [],
+      "confidence": 0.65,
+      "risk_level": "LOW",
+      "generated_at": "2026-09-29T00:00:00.000Z",
+      "expires_at": null,
+      "model_or_rule_version": "cea-0.1.0",
+      "run_id": "run-C1-cus-thandi-p05",
+      "schema_version": "1.0",
+      "state_id": "C1:CustomerSegment:cus-thandi"
+    },
+    "event": {
+      "id": "evt-mumg5rz4-kl5w1l",
+      "businessId": "demo-spaza-001",
+      "name": "customer.segment.updated.v1",
+      "producer": "CustomerEngagement",
+      "targetAgents": [
+        "Sales",
+        "Coordinator"
+      ],
+      "entityId": "cus-thandi",
+      "payload": {
+        "contractVersion": "1.0.0",
+        "agentId": "C1",
+        "customerId": "cus-thandi",
+        "segment": "regular",
+        "score": 65,
+        "reasons": [
+          "Stable purchasing pattern without extreme recency/frequency signals."
+        ],
+        "metrics": {
+          "recencyDays": 3,
+          "frequency90d": 4,
+          "spend90d": 475.99
+        }
+      },
+      "status": "queued",
+      "createdAt": "2026-09-29T00:00:00.000Z"
+    },
+    "recommendation": {
+      "recommendation_id": "rec-cus-thandi-C4",
+      "source_output_id": "C4-cus-thandi-p05",
+      "agent_id": "C4",
+      "domain": "customer-engagement",
+      "output_type": "CustomerAction",
+      "entity_type": "customer",
+      "entity_id": "cus-thandi",
+      "action": {
+        "agentId": "C4",
+        "customerId": "cus-thandi",
+        "action": "promotion",
+        "priority": "medium",
+        "channel": "whatsapp",
+        "summary": "Offer 5% on Bath Soap 175g during the next eligible campaign.",
+        "reasons": [
+          "C3 found a stock-safe, margin-safe promotion.",
+          "C1 segment is regular."
+        ]
+      },
+      "confidence": 0.6,
+      "risk_level": "MEDIUM",
+      "status": "READY_FOR_REVIEW",
+      "created_at": "2026-09-29T00:00:00.000Z",
+      "expires_at": null,
+      "schema_version": "1.0"
+    }
+  }
+}

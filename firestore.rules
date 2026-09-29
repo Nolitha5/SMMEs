@@ -1,0 +1,314 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+
+    function memberPath(businessId) {
+      return /databases/$(database)/documents/businesses/$(businessId)/members/$(request.auth.uid);
+    }
+
+    function isBusinessMember(businessId) {
+      return signedIn() && exists(memberPath(businessId));
+    }
+
+    function member(businessId) {
+      return get(memberPath(businessId)).data;
+    }
+
+    function hasRole(businessId, roles) {
+      return isBusinessMember(businessId) && member(businessId).role in roles;
+    }
+
+    function validString(value) { return value is string && value.size() > 0; }
+
+    function validV3Contract(data) {
+      return data.contractVersion == 1 && data.schemaVersion is int && data.schemaVersion >= 1;
+    }
+
+    function validV4Contract(data) {
+      return data.contractVersion == 1 && data.schemaVersion is int && data.schemaVersion >= 4;
+    }
+
+    function validBusinessScope(data, businessId) {
+      return data.businessId == businessId;
+    }
+
+    function isLegacyDomainCollection(name) {
+      return name in [
+        'customers','products','inventory','transactions','orders',
+        'suppliers','feedback','promotions','syncQueue'
+      ];
+    }
+
+    function isCanonicalOperationalCollection(name) {
+      return name in [
+        'inventorySnapshots','inventoryMovements','localEvents','competitorPrices',
+        'supplierQuotes','supplierPerformance','purchaseOrders','goodsReceipts',
+        'invoices','customerInteractions'
+      ];
+    }
+
+    function validAgentEvent(data, businessId, eventId) {
+      return data.keys().hasAll([
+          'eventId','businessId','eventType','sourceAgent','payload',
+          'contractVersion','schemaVersion','correlationId','idempotencyKey',
+          'status','attemptCount','createdAt'
+        ])
+        && data.eventId == eventId
+        && validBusinessScope(data, businessId)
+        && validString(data.eventType)
+        && validString(data.sourceAgent)
+        && data.payload is map
+        && validV3Contract(data)
+        && validString(data.correlationId)
+        && validString(data.idempotencyKey)
+        && data.status in ['pending','processing','processed','failed','dead-letter']
+        && data.attemptCount is int && data.attemptCount >= 0
+        && data.createdAt is timestamp;
+    }
+
+    function validAgentInsight(data, businessId, insightId) {
+      return data.keys().hasAll([
+          'insightId','businessId','insightType','sourceAgent',
+          'subjectType','subjectId','data','status',
+          'contractVersion','schemaVersion','createdAt','updatedAt'
+        ])
+        && data.insightId == insightId
+        && validBusinessScope(data, businessId)
+        && validString(data.insightType)
+        && validString(data.sourceAgent)
+        && validString(data.subjectType)
+        && validString(data.subjectId)
+        && data.data is map
+        && data.status in ['active','superseded','expired','dismissed']
+        && validV3Contract(data)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function validAgentAction(data, businessId, actionId) {
+      return data.keys().hasAll([
+          'actionId','businessId','actionType','sourceAgent','targetAgent',
+          'subjectType','subjectId','input','status','priority',
+          'contractVersion','schemaVersion','correlationId','idempotencyKey',
+          'createdAt','updatedAt'
+        ])
+        && data.actionId == actionId
+        && validBusinessScope(data, businessId)
+        && data.input is map
+        && data.status in ['proposed','approved','rejected','in-progress','completed','failed','cancelled']
+        && data.priority in ['low','medium','high','critical']
+        && validV3Contract(data)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function validAuditLog(data, businessId, logId) {
+      return data.keys().hasAll([
+          'logId','businessId','actorType','actorId','action',
+          'resourceType','resourceId','details','schemaVersion',
+          'correlationId','createdAt'
+        ])
+        && data.logId == logId
+        && validBusinessScope(data, businessId)
+        && data.actorType in ['user','agent','system']
+        && data.details is map
+        && data.schemaVersion is int && data.schemaVersion >= 1
+        && data.createdAt is timestamp;
+    }
+
+    function validSharedOutput(data, businessId, outputId) {
+      return data.keys().hasAll([
+          'outputId','businessId','capabilityId','sourceAgent','domain','outputType',
+          'entityType','entityId','payload','inputRefs','confidence','riskLevel',
+          'generatedAt','modelOrRuleVersion','runId','contractVersion','schemaVersion',
+          'stateId','correlationId','idempotencyKey'
+        ])
+        && data.outputId == outputId
+        && validBusinessScope(data, businessId)
+        && data.payload is map
+        && data.inputRefs is list
+        && data.confidence is number && data.confidence >= 0 && data.confidence <= 1
+        && data.riskLevel in ['LOW','MEDIUM','HIGH']
+        && data.generatedAt is timestamp
+        && validV4Contract(data);
+    }
+
+    function validAgentState(data, businessId, stateId) {
+      return data.keys().hasAll([
+          'stateId','businessId','outputId','capabilityId','sourceAgent','domain',
+          'outputType','entityType','entityId','payload','confidence','riskLevel',
+          'generatedAt','modelOrRuleVersion','contractVersion','schemaVersion'
+        ])
+        && data.stateId == stateId
+        && validBusinessScope(data, businessId)
+        && data.payload is map
+        && data.confidence is number && data.confidence >= 0 && data.confidence <= 1
+        && data.riskLevel in ['LOW','MEDIUM','HIGH']
+        && data.generatedAt is timestamp
+        && validV4Contract(data);
+    }
+
+    function validAgentRun(data, businessId, runId) {
+      return data.keys().hasAll([
+          'runId','businessId','capabilityId','sourceAgent','domain','entityType',
+          'entityId','startedAt','status','modelOrRuleVersion','inputRefs',
+          'contractVersion','schemaVersion','correlationId'
+        ])
+        && data.runId == runId
+        && validBusinessScope(data, businessId)
+        && data.status in ['RUNNING','SUCCEEDED','FAILED']
+        && data.startedAt is timestamp
+        && data.inputRefs is list
+        && validV4Contract(data);
+    }
+
+    function validRecommendation(data, businessId, recommendationId) {
+      return data.keys().hasAll([
+          'recommendationId','businessId','sourceOutputId','capabilityId','sourceAgent',
+          'domain','recommendationType','subjectType','subjectId','action','confidence',
+          'riskLevel','status','correlationId','createdAt','updatedAt',
+          'contractVersion','schemaVersion'
+        ])
+        && data.recommendationId == recommendationId
+        && validBusinessScope(data, businessId)
+        && data.action is map
+        && data.confidence is number && data.confidence >= 0 && data.confidence <= 1
+        && data.riskLevel in ['LOW','MEDIUM','HIGH']
+        && data.status in ['DRAFT','READY_FOR_REVIEW','APPROVED','MODIFIED','REJECTED','EXECUTED','EXPIRED']
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp
+        && validV4Contract(data);
+    }
+
+    function validApproval(data, businessId, approvalId) {
+      return data.keys().hasAll([
+          'approvalId','businessId','recommendationId','reviewer','decision',
+          'decidedAt','correlationId','contractVersion','schemaVersion'
+        ])
+        && data.approvalId == approvalId
+        && validBusinessScope(data, businessId)
+        && data.decision in ['APPROVED','MODIFIED','REJECTED']
+        && data.decidedAt is timestamp
+        && validV4Contract(data);
+    }
+
+    function validOutcome(data, businessId, outcomeId) {
+      return data.keys().hasAll([
+          'outcomeId','businessId','domain','subjectType','subjectId','data',
+          'recordedAt','contractVersion','schemaVersion','correlationId'
+        ])
+        && data.outcomeId == outcomeId
+        && validBusinessScope(data, businessId)
+        && data.data is map
+        && data.recordedAt is timestamp
+        && validV4Contract(data);
+    }
+
+    match /businesses/{businessId} {
+      allow read: if isBusinessMember(businessId);
+      allow create: if false;
+      allow update, delete: if hasRole(businessId, ['owner','admin']);
+
+      match /members/{userId} {
+        allow read: if isBusinessMember(businessId);
+        allow create, update, delete: if hasRole(businessId, ['owner','admin']);
+      }
+
+      match /{registryName}/{documentId} {
+        allow read: if registryName in [
+          'platformMeta','collectionRegistry','agentRegistry','capabilityRegistry',
+          'contractRegistry','ownershipRegistry'
+        ] && isBusinessMember(businessId);
+        allow create, update, delete: if registryName in [
+          'platformMeta','collectionRegistry','agentRegistry','capabilityRegistry',
+          'contractRegistry','ownershipRegistry'
+        ] && hasRole(businessId, ['owner','admin']);
+      }
+
+      // Existing v3 contracts retained for compatibility.
+      match /agentEvents/{eventId} {
+        allow read: if isBusinessMember(businessId);
+        allow create, update: if isBusinessMember(businessId)
+          && validAgentEvent(request.resource.data, businessId, eventId);
+        allow delete: if hasRole(businessId, ['owner','admin']);
+      }
+
+      match /agentInsights/{insightId} {
+        allow read: if isBusinessMember(businessId);
+        allow create, update: if isBusinessMember(businessId)
+          && validAgentInsight(request.resource.data, businessId, insightId);
+        allow delete: if hasRole(businessId, ['owner','admin']);
+      }
+
+      match /agentActions/{actionId} {
+        allow read: if isBusinessMember(businessId);
+        allow create, update: if isBusinessMember(businessId)
+          && validAgentAction(request.resource.data, businessId, actionId);
+        allow delete: if hasRole(businessId, ['owner','admin']);
+      }
+
+      match /auditLogs/{logId} {
+        allow read: if hasRole(businessId, ['owner','admin']);
+        allow create: if isBusinessMember(businessId)
+          && validAuditLog(request.resource.data, businessId, logId);
+        allow update, delete: if false;
+      }
+
+      // Canonical v4 exchange/governance data is server-authored. Admin SDK
+      // bypasses these rules; clients receive only the reads required by the UI.
+      match /agentOutputs/{outputId} {
+        allow read: if isBusinessMember(businessId);
+        allow write: if false;
+      }
+
+      match /agentState/{stateId} {
+        allow read: if isBusinessMember(businessId);
+        allow write: if false;
+      }
+
+      match /agentRuns/{runId} {
+        allow read: if hasRole(businessId, ['owner','admin']);
+        allow write: if false;
+      }
+
+      match /agentRecommendations/{recommendationId} {
+        allow read: if hasRole(businessId, ['owner','admin']);
+        allow write: if false;
+      }
+
+      match /approvalLog/{approvalId} {
+        allow read: if hasRole(businessId, ['owner','admin']);
+        allow write: if false;
+      }
+
+      match /outcomes/{outcomeId} {
+        allow read: if isBusinessMember(businessId);
+        allow write: if false;
+      }
+
+      // Existing MVP data remains readable to members. Canonical operational
+      // collections are owner/admin writable until final UI roles are defined.
+      match /{collectionName}/{documentId} {
+        allow read: if (isLegacyDomainCollection(collectionName) || isCanonicalOperationalCollection(collectionName))
+          && isBusinessMember(businessId);
+
+        allow create, update: if isLegacyDomainCollection(collectionName)
+          && isBusinessMember(businessId)
+          && request.resource.data.businessId == businessId;
+
+        allow create, update: if isCanonicalOperationalCollection(collectionName)
+          && hasRole(businessId, ['owner','admin'])
+          && request.resource.data.businessId == businessId;
+
+        allow delete: if (isLegacyDomainCollection(collectionName) || isCanonicalOperationalCollection(collectionName))
+          && hasRole(businessId, ['owner','admin']);
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

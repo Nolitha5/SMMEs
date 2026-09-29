@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"competitor-price-signal-v1",
+  "title":"CompetitorPriceSignal",
+  "type":"object",
+  "required":["product_id","observations","market_min","market_max","market_average","observed_at","source_version"],
+  "properties":{
+    "product_id":{"type":"string"},
+    "observations":{"type":"array"},
+    "market_min":{"type":"number","minimum":0},
+    "market_max":{"type":"number","minimum":0},
+    "market_average":{"type":"number","minimum":0},
+    "market_position_pct":{"type":"number"},
+    "observed_at":{"type":"string"},
+    "source_version":{"type":"string"}
+  }
+}

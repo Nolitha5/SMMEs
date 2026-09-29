@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-09-29T00:00:00.000Z",
+  "passed": true,
+  "firebaseWrites": false,
+  "priorGates": {
+    "p05Core": true,
+    "p05CustomerActualCore": true,
+    "p06Pricing": true
+  },
+  "governance": {
+    "priceRecommendationStatusBeforeApproval": "READY_FOR_REVIEW",
+    "authoritativePriceBeforeApproval": 84.99,
+    "approval": {
+      "approval_id": "approval-P5-prod-maize-p07",
+      "recommendation_id": "rec-P5-prod-maize-p07",
+      "reviewer": "demo-owner",
+      "decision": "APPROVED",
+      "modified_action": null,
+      "reason": "P07 deterministic integration approval",
+      "decided_at": "2026-09-29T00:01:00.000Z",
+      "schema_version": "1.0"
+    },
+    "authoritativePriceAfterApproval": 76.49,
+    "marginPctAfterApproval": 17.64,
+    "marginFloor": 74.12
+  },
+  "crossDomainHandoff": {
+    "producer": "P5",
+    "governance": "approvalLog",
+    "projection": "products/prod-maize",
+    "consumers": [
+      "C3",
+      "C4"
+    ],
+    "siphoPromotionBefore": {
+      "agentId": "C3",
+      "customerId": "cus-sipho",
+      "eligible": true,
+      "productId": "prod-maize",
+      "productName": "Maize Meal 5kg",
+      "offerPct": 10,
+      "score": 77,
+      "reasons": [
+        "Product is safely above its reorder threshold.",
+        "Margin guardrail allows up to the recommended 10% offer.",
+        "Customer has bought this product before."
+      ]
+    },
+    "siphoPromotionAfter": {
+      "agentId": "C3",
+      "customerId": "cus-sipho",
+      "eligible": true,
+      "productId": "prod-maize",
+      "productName": "Maize Meal 5kg",
+      "offerPct": 7,
+      "score": 69,
+      "reasons": [
+        "Product is safely above its reorder threshold.",
+        "Margin guardrail allows up to the recommended 7% offer.",
+        "Customer has bought this product before."
+      ]
+    },
+    "siphoNextActionAfter": {
+      "agentId": "C4",
+      "customerId": "cus-sipho",
+      "action": "service-recovery",
+      "priority": "high",
+      "channel": "whatsapp",
+      "summary": "Review the complaint and contact the customer before sending any promotion.",
+      "reasons": [
+        "C5 found negative priority feedback.",
+        "Service recovery takes precedence over promotion."
+      ]
+    }
+  },
+  "existingCoreChain": {
+    "chain": "D4 -> I1/I3 -> I2 -> R4",
+    "selectedSupplier": "SUP-A",
+    "expectedCost": 3171.46,
+    "approvalRequired": true
+  },
+  "demandStatus": {
+    "realFlorahSourceIntegrated": false,
+    "boundaryValidated": true,
+    "nextAction": "Replace provisional D4 provider with Florah's real D4 and rerun this gate."
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "schemaTargetVersion": 4,
+  "businessPathPrefix": "businesses/{businessId}",
+  "collections": [
+    {
+      "collectionId": "customers",
+      "owner": "platform.customer-data",
+      "status": "canonical",
+      "purpose": "Pseudonymous customer profile and consent context."
+    },
+    {
+      "collectionId": "products",
+      "owner": "platform.catalog",
+      "status": "canonical",
+      "purpose": "Shared product identity/catalog. Domain agents must not create competing product identities."
+    },
+    {
+      "collectionId": "transactions",
+      "owner": "platform.ingestion",
+      "status": "canonical",
+      "purpose": "Completed sales/transaction history."
+    },
+    {
+      "collectionId": "inventorySnapshots",
+      "owner": "inventory",
+      "status": "canonical",
+      "purpose": "Inventory stock snapshots."
+    },
+    {
+      "collectionId": "inventoryMovements",
+      "owner": "inventory",
+      "status": "canonical",
+      "purpose": "Append-style inventory movement journal."
+    },
+    {
+      "collectionId": "promotions",
+      "owner": "platform.commercial",
+      "status": "canonical",
+      "purpose": "Approved/planned promotions, not agent recommendations."
+    },
+    {
+      "collectionId": "localEvents",
+      "owner": "demand",
+      "status": "canonical",
+      "purpose": "Local demand signals and event context."
+    },
+    {
+      "collectionId": "competitorPrices",
+      "owner": "pricing",
+      "status": "canonical",
+      "purpose": "Observed competitor/market prices with source and freshness metadata."
+    },
+    {
+      "collectionId": "suppliers",
+      "owner": "procurement",
+      "status": "canonical",
+      "purpose": "Supplier master."
+    },
+    {
+      "collectionId": "supplierQuotes",
+      "owner": "procurement",
+      "status": "canonical",
+      "purpose": "Supplier quote evidence."
+    },
+    {
+      "collectionId": "supplierPerformance",
+      "owner": "procurement",
+      "status": "canonical",
+      "purpose": "Closed-delivery performance."
+    },
+    {
+      "collectionId": "purchaseOrders",
+      "owner": "procurement",
+      "status": "canonical",
+      "purpose": "Approved/executed supplier purchase orders."
+    },
+    {
+      "collectionId": "goodsReceipts",
+      "owner": "procurement",
+      "status": "canonical",
+      "purpose": "Goods receipt evidence."
+    },
+    {
+      "collectionId": "invoices",
+      "owner": "procurement",
+      "status": "canonical",
+      "purpose": "Supplier invoice evidence."
+    },
+    {
+      "collectionId": "feedback",
+      "owner": "platform.customer-data",
+      "status": "canonical",
+      "purpose": "Customer feedback/support intake."
+    },
+    {
+      "collectionId": "customerInteractions",
+      "owner": "platform.customer-data",
+      "status": "canonical",
+      "purpose": "Campaign/contact outcomes and interaction history."
+    },
+    {
+      "collectionId": "agentOutputs",
+      "owner": "platform.exchange",
+      "status": "canonical",
+      "purpose": "Immutable history of every published agent capability output."
+    },
+    {
+      "collectionId": "agentState",
+      "owner": "platform.exchange",
+      "status": "canonical",
+      "purpose": "Latest non-stale projection per capability/output/entity."
+    },
+    {
+      "collectionId": "agentRuns",
+      "owner": "platform.exchange",
+      "status": "canonical",
+      "purpose": "Per-invocation execution trace."
+    },
+    {
+      "collectionId": "agentEvents",
+      "owner": "platform.exchange",
+      "status": "canonical-existing-v3",
+      "purpose": "Routing/trigger events. Retains the v3 event contract and versioned event naming."
+    },
+    {
+      "collectionId": "agentRecommendations",
+      "owner": "platform.governance",
+      "status": "canonical",
+      "purpose": "Human-review action proposals only."
+    },
+    {
+      "collectionId": "approvalLog",
+      "owner": "platform.governance",
+      "status": "canonical",
+      "purpose": "Append-only human decisions."
+    },
+    {
+      "collectionId": "outcomes",
+      "owner": "platform.governance",
+      "status": "canonical",
+      "purpose": "Observed real-world outcomes/evaluation feedback."
+    },
+    {
+      "collectionId": "agentActions",
+      "owner": "platform.execution",
+      "status": "retained-existing-v3",
+      "purpose": "Execution/work items after approval or internal platform tasking; not the recommendation queue."
+    },
+    {
+      "collectionId": "auditLogs",
+      "owner": "platform.audit",
+      "status": "retained-existing-v3",
+      "purpose": "Security/operational append-only audit records; not agent business-output history."
+    },
+    {
+      "collectionId": "syncQueue",
+      "owner": "platform.sync",
+      "status": "retained-existing-v3",
+      "purpose": "Optional cloud-visible retry/sync metadata."
+    },
+    {
+      "collectionId": "agentInsights",
+      "owner": "platform.compatibility",
+      "status": "compatibility",
+      "purpose": "Legacy/UI insight projection. Canonical analytical truth moves through agentOutputs + agentState."
+    },
+    {
+      "collectionId": "inventory",
+      "owner": "inventory",
+      "status": "compatibility",
+      "purpose": "v3 generic inventory alias; migrate to inventorySnapshots/inventoryMovements in Priority 2."
+    },
+    {
+      "collectionId": "orders",
+      "owner": "platform.commercial",
+      "status": "compatibility",
+      "purpose": "v3 generic order alias; supplier POs use purchaseOrders."
+    }
+  ]
+}

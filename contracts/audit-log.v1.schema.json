@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sme-agent-platform.local/contracts/audit-log.v1.schema.json",
+  "title": "AuditLogV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["logId","businessId","actorType","actorId","action","resourceType","resourceId","details","schemaVersion","correlationId","createdAt"],
+  "properties": {
+    "logId": {"type":"string","minLength":1},
+    "businessId": {"type":"string","minLength":1},
+    "actorType": {"enum":["user","agent","system"]},
+    "actorId": {"type":"string","minLength":1},
+    "action": {"type":"string","minLength":1},
+    "resourceType": {"type":"string","minLength":1},
+    "resourceId": {"type":"string","minLength":1},
+    "details": {"type":"object"},
+    "schemaVersion": {"type":"integer","minimum":1},
+    "correlationId": {"type":"string","minLength":1},
+    "createdAt": {"type":["string","object"]}
+  }
+}

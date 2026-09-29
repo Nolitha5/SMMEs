@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "priority": "Complete the 25-agent backend integration",
+  "currentStatus": "implementation-complete-pending-full-test",
+  "completed": [
+    "canonical shared architecture",
+    "inventory-procurement integration",
+    "customer engagement C1-C5 integration",
+    "pricing P1-P5 integration and fairness gates",
+    "cross-domain governance and approval flow",
+    "schema-v4 Firestore runtime/rules/indexes prepared",
+    "real Florah D1-D5 source integrated",
+    "D4 native-to-canonical adapter implemented",
+    "temporary Demand source replacement path removed from production boundary"
+  ],
+  "nextPriority": "Full system test, then Firebase deploy/live validation",
+  "deployPolicy": "blocked-until-real-demand-and-full-system-tests-pass"
+}
