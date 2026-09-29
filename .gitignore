@@ -1,25 +1,37 @@
-# Step 5 — Create .gitignore
-cat > .gitignore << 'EOF'
+# Firebase credentials — NEVER commit
 firebase-credentials.json
 *.json.key
-service-account*.json
-*credentials*.json
-.env
-.env.*
-!.env.example
+
+# Python
 __pycache__/
 *.py[cod]
+*.egg-info/
 .venv/
 venv/
-env/
-node_modules/
 dist/
 build/
 .pytest_cache/
+.mypy_cache/
+htmlcov/
 .coverage
-.idea/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# IDE
 .vscode/
-*.zip
-*.tar.gz
+.idea/
+*.swp
+
+# macOS
 .DS_Store
-EOF
+
+# Docker
+*.log
